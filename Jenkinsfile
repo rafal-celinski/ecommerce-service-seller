@@ -6,6 +6,7 @@ pipeline {
             steps {
                 echo 'to eksperymentalny pipeline'
             }
+        }
         stage("test") {
             steps {
                 echo 'kocham testować'
