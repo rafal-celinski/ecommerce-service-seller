@@ -17,17 +17,17 @@ class ToTextConverterTest {
         assertEquals("jeden", converter.toText(1));
     }
 
-//    @Test
-//    void testTwo() throws Exception {
-//        ToTextConverter converter = new ToTextConverter();
-//        assertEquals("dwa", converter.toText(2));
-//    }
-//
-//    @Test
-//    void testThree() throws Exception {
-//        ToTextConverter converter = new ToTextConverter();
-//        assertEquals("trzy", converter.toText(3));
-//    }
+    @Test
+    void testTwo() throws Exception {
+        ToTextConverter converter = new ToTextConverter();
+        assertEquals("dwa", converter.toText(2));
+    }
+
+    @Test
+    void testThree() throws Exception {
+        ToTextConverter converter = new ToTextConverter();
+        assertEquals("trzy", converter.toText(3));
+    }
 
     @Test
     void testOutOfRange() {
