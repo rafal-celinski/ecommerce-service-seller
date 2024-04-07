@@ -26,7 +26,7 @@ pipeline {
     post {
         always {
             step([$class: 'GitHubCommitStatusSetter'])
-            jiraSendBuildInfo 
+            jiraSendBuildInfo site: 'projektpis.atlassian.net'
         }
     }
 }
