@@ -26,7 +26,7 @@ class ToTextConverterTest {
     @Test
     void testThree() throws Exception {
         ToTextConverter converter = new ToTextConverter();
-        assertEquals("trzay", converter.toText(3));
+        assertEquals("trzy", converter.toText(3));
     }
 
     @Test
