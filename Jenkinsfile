@@ -8,25 +8,34 @@ pipeline {
         stage('Compile') {
             steps {
                 step([$class: 'GitHubCommitStatusSetter'])
-                sh 'mvn -f example/pom.xml clean compile'
+                sh 'mvn -f api/pom.xml clean compile'
             }
         }
         stage('Test') {
             steps {
-                sh 'mvn -f example/pom.xml test'
+                sh 'mvn -f api/pom.xml test'
             }
         }
-        stage('Test covearge') {
+        stage('Verify') {
             steps {
-                sh 'mvn -f example/pom.xml org.jacoco:jacoco-maven-plugin:0.8.8:prepare-agent verify org.jacoco:jacoco-maven-plugin:0.8.8:report'
+                sh 'mvn -f api/pom.xml verify'
             }
 
         }
+	stage('Deploy') {
+            steps {
+		configFileProvider([configFile(fileId: 'maven_settings', variable: 'MAVEN_SETTINGS')]) {
+        		sh 'mvn -s $MAVEN_SETTINGS -f api/pom.xml deploy'
+    		}                
+            }
+
+        }
+
     }
     post {
         always {
             step([$class: 'GitHubCommitStatusSetter'])
-            jiraSendBuildInfo site: 'projektpis.atlassian.net'
+            jiraSendBuildInfo site: 'pis-24l.atlassian.net'
         }
     }
 }
