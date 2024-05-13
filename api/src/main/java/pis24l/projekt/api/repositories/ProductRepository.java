@@ -7,21 +7,21 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Repository;
 import pis24l.projekt.api.model.Product;
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "SELECT * FROM Product p WHERE (:minPrice IS NULL OR p.price >= :minPrice) " +
             "AND (:maxPrice IS NULL OR p.price <= :maxPrice) " +
-            "AND (:date IS NULL OR DATE(p.date_added) = :date) " +
-            "AND (:sellerName IS NULL OR p.seller_name = :sellerName) " +
-            "AND (:name IS NULL OR p.name LIKE :name)", nativeQuery = true)
+            "AND (coalesce(:date, null) is null OR p.date_added = :date) " +
+            "AND (:sellerName IS NULL OR p.seller_name = cast(:sellerName as text)) " +
+            "AND (:name IS NULL OR p.name LIKE cast(:name as text))", nativeQuery = true)
     List<Product> findByCriteria(@Param("minPrice") BigDecimal minPrice,
                                  @Param("maxPrice") BigDecimal maxPrice,
-                                 @Param("date") @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDate date,
+                                 @Param("date") @DateTimeFormat(iso= DateTimeFormat.ISO.DATE) Date date,
                                  @Param("sellerName") String sellerName,
                                  @Param("name") String name);
 }

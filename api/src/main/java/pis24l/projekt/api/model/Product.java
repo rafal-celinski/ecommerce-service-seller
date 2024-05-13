@@ -4,36 +4,43 @@ import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.Date;
+import java.sql.Date;
 
 @Entity
-@Table(name = "products_test")
+@Table(name = "product")
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "price")
-    private BigDecimal price;
+    public String getName() {
+        return name;
+    }
 
-    @Column(name = "date_added")
-    private LocalDate date_added;
+    public Date getDate_added() {
+        return date_added;
+    }
 
-    @Column(name = "seller_name")
+    public String getSeller_name() {
+        return seller_name;
+    }
+    public Long getId() {
+        return this.id;
+    }
+
+    @Column(name="date_added")
+    private Date date_added;
+
     private String seller_name;
 
     public Product() {
     }
 
-    public Product(String name, BigDecimal price, LocalDate dateAdded, String sellerName) {
+    public Product(String name, BigDecimal price, Date dateAdded, String sellerName) {
         this.name = name;
-        this.price = price;
         this.date_added = dateAdded;
         this.seller_name = sellerName;
     }

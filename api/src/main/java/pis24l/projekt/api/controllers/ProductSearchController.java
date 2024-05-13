@@ -10,8 +10,8 @@ import pis24l.projekt.api.repositories.ProductRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
+import java.sql.Date;
 
 @RestController
 @RequestMapping("/products")
@@ -25,7 +25,7 @@ public class ProductSearchController {
     @GetMapping("/search")
     public List<Product> searchProducts(@RequestParam(required = false) BigDecimal minPrice,
                                         @RequestParam(required = false) BigDecimal maxPrice,
-                                        @RequestParam(required = false) LocalDate date,
+                                        @RequestParam(required = false) Date date,
                                         @RequestParam(required = false) String sellerName,
                                         @RequestParam(required = false) String name) {
         return productRepository.findByCriteria(minPrice, maxPrice, date, sellerName, name);

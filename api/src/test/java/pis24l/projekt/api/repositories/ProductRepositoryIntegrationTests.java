@@ -19,7 +19,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @AutoConfigureMockMvc
 public class ProductRepositoryIntegrationTests {
     @TestConfiguration
-    @ComponentScan(basePackages = "pis24l.projekt.api")
     static class HelloControllerTestConfig {
     }
 
@@ -31,12 +30,12 @@ public class ProductRepositoryIntegrationTests {
         mockMvc.perform(get("/products/search")
                         .param("minPrice", "10.0")
                         .param("maxPrice", "20.0")
-                        .param("date", "2024-05-13"))// Example date in yyyy-MM-dd format
+                        .param("date", "2024-05-13"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(2))
-                .andExpect(jsonPath("$[0].name").value("Product A"))
-                .andExpect(jsonPath("$[1].name").value("Product B"));
+                .andExpect(jsonPath("$.length()").value(4))
+                .andExpect(jsonPath("$[0].name").value("Product 1"))
+                .andExpect(jsonPath("$[1].name").value("Product 2"));
 
     }
 }
