@@ -2,7 +2,6 @@ package pis24l.projekt.api.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import pis24l.projekt.api.dtos.ProductDTO;
 import pis24l.projekt.api.model.Product;
 import pis24l.projekt.api.service.ProductSearchService;
 
