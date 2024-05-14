@@ -17,9 +17,9 @@ public class Product {
     private BigDecimal price;
     private String location;
     @Column(name="date")
-    private LocalDateTime dateAdded;
+    private LocalDateTime date;
     @Column(name="image_url")
-    private String imageUrl;
+    private String image;
 
     private Long category;
     private Long subcategory;
@@ -29,8 +29,8 @@ public class Product {
         this.title = title;
         this.price = price;
         this.location = location;
-        this.dateAdded = dateAdded;
-        this.imageUrl = imageUrl;
+        this.date = dateAdded;
+        this.image = imageUrl;
         this.category = category;
         this.subcategory = subcategory;
     }
@@ -51,19 +51,12 @@ public class Product {
         return location;
     }
 
-    public LocalDateTime getDateAdded() {
-        return dateAdded;
+    public LocalDateTime getDate() {
+        return date;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getImage() {
+        return image;
     }
 
-    public Long getCategory() {
-        return category;
-    }
-
-    public Long getSubcategory() {
-        return subcategory;
-    }
 }

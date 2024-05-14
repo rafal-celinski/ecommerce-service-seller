@@ -1,52 +1,35 @@
 package pis24l.projekt.api.controllers;
 
-import org.apache.tomcat.jni.Local;
-import org.modelmapper.ModelMapper;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 import pis24l.projekt.api.dtos.ProductDTO;
 import pis24l.projekt.api.model.Product;
-import pis24l.projekt.api.repositories.ProductRepository;
+import pis24l.projekt.api.service.ProductSearchService;
+
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/products")
 public class ProductSearchController {
-    private final ProductRepository productRepository;
-    private  final ModelMapper modelMapper;
 
-    public ProductSearchController(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-        this.modelMapper = new ModelMapper();
+    private final ProductSearchService productService;
+
+    @Autowired
+    public ProductSearchController(ProductSearchService productService) {
+        this.productService = productService;
     }
 
     @GetMapping("/search")
-    public List<ProductDTO> searchProducts(
+    public List<Product> searchProducts(
             @RequestParam(required = false, defaultValue = "") String search,
             @RequestParam(required = false) Long category,
             @RequestParam(required = false) Long subcategory,
             @RequestParam(required = false) BigDecimal minPrice,
             @RequestParam(required = false) BigDecimal maxPrice,
             @RequestParam(required = false) String location,
-            @RequestParam(required = false,defaultValue = "false") Boolean isTesting) {
-        // Assuming search is for the product title
-        if (!isTesting){
-            return mapProductsToDTOs(productRepository.findAll());
-        }
-        else {
-            return mapProductsToDTOs(productRepository.findByPriceBetweenAndTitleContainingAndCategoryAndSubcategoryAndLocation(
-                    minPrice, maxPrice, search, category, subcategory, location));
-        }
-    }
-    private List<ProductDTO> mapProductsToDTOs(List<Product> products) {
-        return products.stream()
-                .map(product -> modelMapper.map(product, ProductDTO.class))
-                .collect(Collectors.toList());
+            @RequestParam(required = false, defaultValue = "false") Boolean isTesting) {
+        return productService.searchProducts(search, category, subcategory, minPrice, maxPrice, location, isTesting);
     }
 }
