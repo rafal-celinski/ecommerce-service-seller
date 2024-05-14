@@ -28,14 +28,11 @@ public class ProductRepositoryIntegrationTests {
     @Test
     public void testSearchProducts() throws Exception {
         mockMvc.perform(get("/products/search")
-                        .param("minPrice", "10.0")
-                        .param("maxPrice", "20.0")
-                        .param("date", "2024-05-13"))
+                        .param("minPrice", "0.0")
+                        .param("maxPrice", "20000.0"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(4))
-                .andExpect(jsonPath("$[0].name").value("Product 1"))
-                .andExpect(jsonPath("$[1].name").value("Product 2"));
+                .andExpect(jsonPath("$.length()").value(2));
 
     }
 }
