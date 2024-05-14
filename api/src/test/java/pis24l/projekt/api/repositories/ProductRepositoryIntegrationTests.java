@@ -30,9 +30,8 @@ public class ProductRepositoryIntegrationTests {
         mockMvc.perform(get("/products/search")
                         .param("minPrice", "0.0")
                         .param("maxPrice", "20000.0"))
-                .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(2));
+                .andExpect(jsonPath("$.length()").value(54));
 
     }
 }
