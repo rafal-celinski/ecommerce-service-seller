@@ -14,14 +14,4 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    @Query(value = "SELECT * FROM Product p WHERE (:minPrice IS NULL OR p.price >= :minPrice) " +
-            "AND (:maxPrice IS NULL OR p.price <= :maxPrice) " +
-            "AND (coalesce(:date, null) is null OR p.date_added = :date) " +
-            "AND (:sellerName IS NULL OR p.seller_name = cast(:sellerName as text)) " +
-            "AND (:name IS NULL OR p.name LIKE cast(:name as text))", nativeQuery = true)
-    List<Product> findByCriteria(@Param("minPrice") BigDecimal minPrice,
-                                 @Param("maxPrice") BigDecimal maxPrice,
-                                 @Param("date") @DateTimeFormat(iso= DateTimeFormat.ISO.DATE) Date date,
-                                 @Param("sellerName") String sellerName,
-                                 @Param("name") String name);
 }

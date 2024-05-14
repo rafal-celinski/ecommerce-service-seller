@@ -14,7 +14,7 @@ import pis24l.projekt.api.model.Product;
 
 @RestController
 @RequestMapping("/products/add")
-public class ProductController {
+public class ProductAddController {
 
     @Autowired
     private ProductRepository productRepository;
@@ -24,7 +24,7 @@ public class ProductController {
             //Add error handling
             return ResponseEntity.badRequest().build();
         }
-        Product savedProduct = productRepository.addProduct(product);
+        Product savedProduct = productRepository.save(product);
         return ResponseEntity.ok(savedProduct);
     }
 }

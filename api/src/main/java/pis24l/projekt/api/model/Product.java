@@ -1,48 +1,78 @@
 package pis24l.projekt.api.model;
 
-import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
+import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "product")
+@Table(name = "produkty")
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @NotNull
+    private String title;
 
-    public String getName() {
-        return name;
+    @NotNull
+    private BigDecimal price;
+
+    @NotNull
+    private String location;
+
+    @Column(name="date")
+    private LocalDateTime dateAdded;
+
+    @Column(name="image_url")
+    private String imageUrl;
+
+    private Long category;
+    private Long subcategory;
+
+    protected Product() {}
+    public Product(String title, BigDecimal price, String location, LocalDateTime dateAdded, String imageUrl, Long subcategory, Long category) {
+        this.title = title;
+        this.price = price;
+        this.location = location;
+        this.dateAdded = dateAdded;
+        this.imageUrl = imageUrl;
+        this.category = category;
+        this.subcategory = subcategory;
     }
 
-    public Date getDate_added() {
-        return date_added;
-    }
-
-    public String getSeller_name() {
-        return seller_name;
-    }
     public Long getId() {
-        return this.id;
+        return id;
     }
 
-    @Column(name="date_added")
-    private Date date_added;
-
-    private String seller_name;
-
-    public Product() {
+    public String getTitle() {
+        return title;
     }
 
-    public Product(String name, BigDecimal price, Date dateAdded, String sellerName) {
-        this.name = name;
-        this.date_added = dateAdded;
-        this.seller_name = sellerName;
+    public BigDecimal getPrice() {
+        return price;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public LocalDateTime getDateAdded() {
+        return dateAdded;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public Long getCategory() {
+        return category;
+    }
+
+    public Long getSubcategory() {
+        return subcategory;
+    }
 }
