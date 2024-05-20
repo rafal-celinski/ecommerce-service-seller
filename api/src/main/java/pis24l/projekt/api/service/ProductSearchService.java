@@ -24,6 +24,9 @@ public class ProductSearchService {
     public ProductSearchService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
+    public void setEntityManager(EntityManager entityManager) { // Add this setter for testing
+        this.entityManager = entityManager;
+    }
 
     public List<Product> searchProducts(String search,
                                         Long category,
