@@ -1,33 +1,39 @@
 package pis24l.projekt.api.model;
 
-import com.sun.istack.NotNull;
+import org.springframework.boot.convert.DataSizeUnit;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.time.LocalDateTime;
 
+import javax.validation.constraints.Size;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 @Entity
-@Table(name = "produkty")
+@Table(name = "products")
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @NotNull(message = "Title cannot be null")
+    @Size(min = 1, max = 255, message = "Title must be between 1 and 255 characters")
     private String title;
 
-    @NotNull
+    @NotNull(message = "Price cannot be null")
+    @Min(value = 0, message = "Price must be greater than or equal to 0")
     private BigDecimal price;
 
-    @NotNull
+    @NotNull(message = "Location cannot be null")
+    @Size(min = 1, max = 255, message = "Location must be between 1 and 255 characters")
     private String location;
 
-    @Column(name="date")
+    @Column(name = "date")
     private LocalDateTime dateAdded;
 
-    @Column(name="image_url")
+    @Column(name = "image_url")
     private String imageUrl;
 
     private Long category;
