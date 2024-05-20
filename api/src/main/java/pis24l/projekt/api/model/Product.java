@@ -1,32 +1,31 @@
 package pis24l.projekt.api.model;
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "produkty")
+@Table(name = "product")
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     private String title;
+
+    @NotNull
     private BigDecimal price;
-    private String location;
-    @Column(name="date")
-    private LocalDateTime date;
-    @Column(name="image_url")
-    private String image;
-
-    private Long category;
-    private Long subcategory;
-
-
 
     private String description;
+
+    private Long category;
+
+    private Long subcategory;
 
     protected Product() {}
     public Product(String title, BigDecimal price, String location, LocalDateTime dateAdded, String imageUrl, Long subcategory, Long category, String description) {
@@ -39,6 +38,14 @@ public class Product {
         this.subcategory = subcategory;
         this.description = description;
     }
+    @NotNull
+    private String location;
+
+    @Column(name="date")
+    private LocalDateTime date;
+
+    @Column(name="image_url")
+    private String image;
 
     public Long getId() {
         return id;
@@ -65,4 +72,11 @@ public class Product {
     }
     public String getDescription() { return description; }
 
+    public Long getCategory() {
+        return category;
+    }
+
+    public Long getSubcategory() {
+        return subcategory;
+    }
 }
