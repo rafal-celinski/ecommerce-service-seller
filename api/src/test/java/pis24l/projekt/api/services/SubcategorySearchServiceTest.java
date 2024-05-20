@@ -50,8 +50,6 @@ public class SubcategorySearchServiceTest {
     @Test
     public void testSearchCategorySubcategories() {
         // Given
-        String search = "searchTerm";
-
         List<Subcategory> subcategoryList = new ArrayList<>();
         Long category = 0L;
         Subcategory subcategory = new Subcategory(0L,"test",new Category(0L, "test2"));
