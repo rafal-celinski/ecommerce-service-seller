@@ -33,13 +33,8 @@ public class ProductSearchService {
                                         Long subcategory,
                                         BigDecimal minPrice,
                                         BigDecimal maxPrice,
-                                        String location,
-                                        Boolean isTesting) {
-        if (!isTesting) {
-            return productRepository.findAll();
-        } else {
+                                        String location) {
             return searchProductsWithCriteria(search, category, subcategory, minPrice, maxPrice, location);
-        }
     }
 
     private List<Product> searchProductsWithCriteria(String search,

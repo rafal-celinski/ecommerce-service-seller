@@ -41,10 +41,10 @@ public class ProductSearchControllerTest {
         products.add(new Product("Product 1", BigDecimal.valueOf(50), location, LocalDateTime.now(),"xd",0L,0L));
         products.add(new Product("Product 2", BigDecimal.valueOf(80), location, LocalDateTime.now(),"xd",0L,0L));
 
-        when(productService.searchProducts(search, null, null, minPrice, maxPrice, location, false)).thenReturn(products);
+        when(productService.searchProducts(search, null, null, minPrice, maxPrice, location)).thenReturn(products);
 
         // When
-        List<Product> result = productSearchController.searchProducts(search, null, null, minPrice, maxPrice, location, false);
+        List<Product> result = productSearchController.searchProducts(search, null, null, minPrice, maxPrice, location);
 
         // Then
         assertEquals(products.size(), result.size());

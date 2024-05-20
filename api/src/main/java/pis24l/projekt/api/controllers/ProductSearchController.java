@@ -27,8 +27,7 @@ public class ProductSearchController {
             @RequestParam(required = false) Long subcategory,
             @RequestParam(required = false) BigDecimal minPrice,
             @RequestParam(required = false) BigDecimal maxPrice,
-            @RequestParam(required = false) String location,
-            @RequestParam(required = false, defaultValue = "false") Boolean isTesting) {
-        return productService.searchProducts(search, category, subcategory, minPrice, maxPrice, location, isTesting);
+            @RequestParam(required = false) String location) {
+        return productService.searchProducts(search, category, subcategory, minPrice, maxPrice, location);
     }
 }
