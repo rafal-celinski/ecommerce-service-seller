@@ -11,7 +11,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "products")
+@Table(name = "product")
 public class Product {
 
     @Id
@@ -31,21 +31,24 @@ public class Product {
     private String location;
 
     @Column(name = "date")
-    private LocalDateTime dateAdded;
+    private LocalDateTime date;
 
-    @Column(name = "image_url")
-    private String imageUrl;
+    @Column(name = "image")
+    private String image;
 
+    @NotNull(message = "Category cannot be null")
     private Long category;
+
+    @NotNull(message = "Subcategory cannot be null")
     private Long subcategory;
 
     protected Product() {}
-    public Product(String title, BigDecimal price, String location, LocalDateTime dateAdded, String imageUrl, Long subcategory, Long category) {
+    public Product(String title, BigDecimal price, String location, LocalDateTime date, String image, Long subcategory, Long category) {
         this.title = title;
         this.price = price;
         this.location = location;
-        this.dateAdded = dateAdded;
-        this.imageUrl = imageUrl;
+        this.date = date;
+        this.image = image;
         this.category = category;
         this.subcategory = subcategory;
     }
@@ -67,11 +70,11 @@ public class Product {
     }
 
     public LocalDateTime getDateAdded() {
-        return dateAdded;
+        return date;
     }
 
     public String getImageUrl() {
-        return imageUrl;
+        return image;
     }
 
     public Long getCategory() {
@@ -80,5 +83,33 @@ public class Product {
 
     public Long getSubcategory() {
         return subcategory;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setDateAdded(LocalDateTime dateAdded) {
+        this.date = dateAdded;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.image = imageUrl;
+    }
+
+    public void setCategory(Long category) {
+        this.category = category;
+    }
+
+    public void setSubcategory(Long subcategory) {
+        this.subcategory = subcategory;
     }
 }
