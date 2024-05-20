@@ -24,8 +24,12 @@ public class Product {
     private Long category;
     private Long subcategory;
 
+
+
+    private String description;
+
     protected Product() {}
-    public Product(String title, BigDecimal price, String location, LocalDateTime dateAdded, String imageUrl, Long subcategory, Long category) {
+    public Product(String title, BigDecimal price, String location, LocalDateTime dateAdded, String imageUrl, Long subcategory, Long category, String description) {
         this.title = title;
         this.price = price;
         this.location = location;
@@ -33,6 +37,7 @@ public class Product {
         this.image = imageUrl;
         this.category = category;
         this.subcategory = subcategory;
+        this.description = description;
     }
 
     public Long getId() {
@@ -58,5 +63,6 @@ public class Product {
     public String getImage() {
         return image;
     }
+    public String getDescription() { return description; }
 
 }
