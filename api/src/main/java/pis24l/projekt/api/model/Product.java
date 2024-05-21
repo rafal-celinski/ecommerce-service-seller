@@ -88,8 +88,40 @@ public class Product {
         return category;
     }
 
+
     public Long getSubcategory() {
         return subcategory;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setCategory(Long category) {
+        this.category = category;
+    }
+
+    public void setSubcategory(Long subcategory) {
+        this.subcategory = subcategory;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
 }
