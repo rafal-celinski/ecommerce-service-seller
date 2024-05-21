@@ -38,7 +38,6 @@ public class ProductUpdateController {
         updatedProduct.setPrice(product.getPrice());
         updatedProduct.setLocation(product.getLocation());
         updatedProduct.setDateAdded(product.getDateAdded());
-        updatedProduct.setImageUrl(product.getImageUrl());
         updatedProduct.setCategory(product.getCategory());
         updatedProduct.setSubcategory(product.getSubcategory());
 

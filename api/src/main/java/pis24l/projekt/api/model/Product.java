@@ -33,9 +33,6 @@ public class Product {
     @Column(name = "date")
     private LocalDateTime date;
 
-    @Column(name = "image")
-    private String image;
-
     @NotNull(message = "Category cannot be null")
     private Long category;
 
@@ -48,7 +45,6 @@ public class Product {
         this.price = price;
         this.location = location;
         this.date = date;
-        this.image = image;
         this.category = category;
         this.subcategory = subcategory;
     }
@@ -73,10 +69,6 @@ public class Product {
         return date;
     }
 
-    public String getImageUrl() {
-        return image;
-    }
-
     public Long getCategory() {
         return category;
     }
@@ -99,10 +91,6 @@ public class Product {
 
     public void setDateAdded(LocalDateTime dateAdded) {
         this.date = dateAdded;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.image = imageUrl;
     }
 
     public void setCategory(Long category) {
