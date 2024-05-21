@@ -43,12 +43,16 @@ public class Product {
     @Column(name="description")
     private String description;
 
+    @PrePersist
+    protected void onCreate() {
+        date = LocalDateTime.now();
+    }
+
     protected Product() {}
     public Product(String title, BigDecimal price, String location, Long subcategory, Long category, String description) {
         this.title = title;
         this.price = price;
         this.location = location;
-        this.date = LocalDateTime.now();
         this.category = category;
         this.subcategory = subcategory;
         this.description = description;
