@@ -1,11 +1,13 @@
 package pis24l.projekt.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "product")
@@ -28,12 +30,11 @@ public class Product {
     private Long subcategory;
 
     protected Product() {}
-    public Product(String title, BigDecimal price, String location, LocalDateTime dateAdded, String imageUrl, Long subcategory, Long category, String description) {
+    public Product(String title, BigDecimal price, String location, LocalDateTime dateAdded,String description, Long subcategory, Long category) {
         this.title = title;
         this.price = price;
         this.location = location;
         this.date = dateAdded;
-        this.image = imageUrl;
         this.category = category;
         this.subcategory = subcategory;
         this.description = description;
@@ -43,11 +44,18 @@ public class Product {
 
     @Column(name="date")
     private LocalDateTime date;
+    @Transient
+    private List<String> imageUrls; // Add this field
 
-    @Column(name="image_url")
-    private String image;
+    // Getters and setters for the new field
+    public List<String> getImageUrls() {
+        return imageUrls;
+    }
 
-    public Long getId() {
+    public void setImageUrls(List<String> imageUrls) {
+        this.imageUrls = imageUrls;
+    }
+        public Long getId() {
         return id;
     }
 
@@ -67,9 +75,6 @@ public class Product {
         return date;
     }
 
-    public String getImage() {
-        return image;
-    }
     public String getDescription() { return description; }
 
     public Long getCategory() {
@@ -79,4 +84,5 @@ public class Product {
     public Long getSubcategory() {
         return subcategory;
     }
+
 }

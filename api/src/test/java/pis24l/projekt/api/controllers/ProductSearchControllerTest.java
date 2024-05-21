@@ -49,7 +49,7 @@ public class ProductSearchControllerTest {
         Pageable pageable = PageRequest.of(0, 10);
 
         List<Product> productList = new ArrayList<>();
-        Product product = new Product("title", BigDecimal.valueOf(20), "Warszawa", LocalDateTime.now(), "image", 1L, 2L, "xd");
+        Product product = new Product("title", BigDecimal.valueOf(20), "Warszawa", LocalDateTime.now(), "image", 1L, 2L);
         productList.add(product);
         Page<Product> productPage = new PageImpl<>(productList, pageable, 1);
 
@@ -75,7 +75,7 @@ public class ProductSearchControllerTest {
         Pageable pageable = PageRequest.of(0, 10);
 
         List<Product> productList = new ArrayList<>();
-        Product product = new Product("title", BigDecimal.valueOf(20), "Warszawa", LocalDateTime.now(), "image", null, 2L, "XD");
+        Product product = new Product("title", BigDecimal.valueOf(20), "Warszawa", LocalDateTime.now(), "image", null, 2L);
         productList.add(product);
         Page<Product> productPage = new PageImpl<>(productList, pageable, 1);
 

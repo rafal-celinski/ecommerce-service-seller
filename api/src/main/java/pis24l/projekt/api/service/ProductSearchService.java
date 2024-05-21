@@ -4,23 +4,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import pis24l.projekt.api.model.Image;
 import pis24l.projekt.api.model.Product;
+import pis24l.projekt.api.repositories.ImageRepository;
 import pis24l.projekt.api.repositories.ProductRepository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Transient;
 import javax.persistence.criteria.*;
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductSearchService {
 
     private final ProductRepository productRepository;
+    private final ImageRepository imageRepository;
     private EntityManager entityManager;
 
     @Autowired
-    public ProductSearchService(ProductRepository productRepository, EntityManager entityManager) {
+    public ProductSearchService(ProductRepository productRepository, EntityManager entityManager, ImageRepository imageRepository) {
+        this.imageRepository = imageRepository;
         this.productRepository = productRepository;
         this.entityManager = entityManager;
     }
@@ -29,6 +37,7 @@ public class ProductSearchService {
         this.entityManager = entityManager;
     }
 
+    @Transactional
     public Page<Product> searchProducts(String search, Long category, Long subcategory, BigDecimal minPrice, BigDecimal maxPrice, String location, Pageable pageable) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Product> query = cb.createQuery(Product.class);
@@ -63,6 +72,18 @@ public class ProductSearchService {
                 .setMaxResults(pageable.getPageSize())
                 .getResultList();
 
+        // Fetch and set image URLs
+        for (Product product : resultList) {
+            List<Image> images = imageRepository.findByProductId(product.getId());
+            List<String> imageUrls = new ArrayList<>();
+            if (!images.isEmpty()) {
+                Image firstImage = images.get(0); // Get the first image
+                String imageUrl = "/images/" + firstImage.getId(); // Map the URL
+                imageUrls.add(imageUrl); // Add the URL to the list
+            }
+            product.setImageUrls(imageUrls); // Set the list of URLs in the product
+        }
+
         // Count total records for pagination metadata
         CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
         Root<Product> countRoot = countQuery.from(Product.class);
@@ -70,5 +91,21 @@ public class ProductSearchService {
         Long count = entityManager.createQuery(countQuery).getSingleResult();
 
         return new org.springframework.data.domain.PageImpl<>(resultList, pageable, count);
+    }
+
+    @Transactional
+    public Product getProductById(Long productId) {
+        Optional<Product> productOptional = productRepository.findById(productId);
+        if (productOptional.isPresent()) {
+            Product product = productOptional.get();
+            List<Image> images = imageRepository.findByProductId(productId);
+            List<String> imageUrls = images.stream()
+                    .map(image -> "/images/" + image.getId())
+                    .collect(Collectors.toList());
+            product.setImageUrls(imageUrls);
+            return product;
+        } else {
+            throw new RuntimeException("Product not found with id " + productId);
+        }
     }
 }
