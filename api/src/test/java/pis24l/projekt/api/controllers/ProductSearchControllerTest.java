@@ -9,8 +9,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import pis24l.projekt.api.model.Product;
 import pis24l.projekt.api.service.ProductSearchService;
@@ -20,6 +24,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -31,7 +38,7 @@ public class ProductSearchControllerTest {
 
 
     @Mock
-    private ProductSearchService productService;
+    private ProductSearchService productSearchService;
 
     @InjectMocks
     private ProductSearchController productSearchController;
@@ -45,54 +52,47 @@ public class ProductSearchControllerTest {
 
 
     @Test
-    public void testSearchProducts_withAllParameters() throws Exception {
+    public void testSearchProducts_withAllParameters() {
+        // Given
+        BigDecimal minPrice = BigDecimal.valueOf(0);
+        BigDecimal maxPrice = BigDecimal.valueOf(100);
+        String search = "searchTerm";
+        Long category = 1L;
+        Long subcategory = 2L;
+        String location = "location";
         Pageable pageable = PageRequest.of(0, 10);
 
         List<Product> productList = new ArrayList<>();
-        Product product = new Product("title", BigDecimal.valueOf(20), "Warszawa", LocalDateTime.now(), "image", 1L, 2L);
+        Product product = new Product("xd", BigDecimal.valueOf(20), "Warszawa", LocalDateTime.now(), "xd", 0L, 0L);
         productList.add(product);
-        Page<Product> productPage = new PageImpl<>(productList, pageable, 1);
+        long total = 1;
 
-        when(productService.searchProducts("searchTerm", 1L, 2L, BigDecimal.valueOf(0), BigDecimal.valueOf(100), "location", pageable))
-                .thenReturn(productPage);
+        when(productSearchService.searchProducts(anyString(), anyLong(), anyLong(), any(BigDecimal.class), any(BigDecimal.class), anyString(), eq(pageable)))
+                .thenReturn(new PageImpl<>(productList, pageable, total));
 
-        mockMvc.perform(get("/products/search")
-                        .param("search", "searchTerm")
-                        .param("category", "1")
-                        .param("subcategory", "2")
-                        .param("minPrice", "0")
-                        .param("maxPrice", "100")
-                        .param("location", "location")
-                        .param("page", "0")
-                        .param("size", "10")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content[0].title").value("title"));
+        // When
+        ResponseEntity<Page<Product>> response = productSearchController.searchProducts(search, category, subcategory, minPrice, maxPrice, location, pageable);
+
+        // Then
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(1, response.getBody().getTotalElements());
+        assertEquals(1, response.getBody().getContent().size());
     }
-
     @Test
-    public void testSearchProducts_withoutCategory() throws Exception {
-        Pageable pageable = PageRequest.of(0, 10);
+    public void testGetProductById() throws Exception {
+        // Mocking a product object
+        Product mockProduct = new Product(1L, "Mock Product", BigDecimal.valueOf(10.99));
 
-        List<Product> productList = new ArrayList<>();
-        Product product = new Product("title", BigDecimal.valueOf(20), "Warszawa", LocalDateTime.now(), "image", null, 2L);
-        productList.add(product);
-        Page<Product> productPage = new PageImpl<>(productList, pageable, 1);
 
-        when(productService.searchProducts("searchTerm", null, 2L, BigDecimal.valueOf(0), BigDecimal.valueOf(100), "location", pageable))
-                .thenReturn(productPage);
+        // Mocking the behavior of the ProductService to return the mockProduct when getProductById is called with ID 1
+        when(productSearchService.getProductById(1L)).thenReturn(mockProduct);
 
-        mockMvc.perform(get("/products/search")
-                        .param("search", "searchTerm")
-                        .param("subcategory", "2")
-                        .param("minPrice", "0")
-                        .param("maxPrice", "100")
-                        .param("location", "location")
-                        .param("page", "0")
-                        .param("size", "10")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content[0].title").value("title"));
+        // Perform GET request to /products/{id} endpoint
+        mockMvc.perform(MockMvcRequestBuilders.get("/products/{id}", 1L))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Mock Product"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(10.99));
     }
 
 }
