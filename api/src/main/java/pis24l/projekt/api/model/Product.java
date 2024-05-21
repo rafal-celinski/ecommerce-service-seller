@@ -39,6 +39,13 @@ public class Product {
         this.subcategory = subcategory;
         this.description = description;
     }
+
+    public Product(Long id, String title, BigDecimal price) {
+        this.id = id;
+        this.title = title;
+        this.price = price;
+    }
+
     @NotNull
     private String location;
 

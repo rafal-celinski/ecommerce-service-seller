@@ -5,11 +5,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.PageImpl;
+import pis24l.projekt.api.model.Image;
 import pis24l.projekt.api.model.Product;
+import pis24l.projekt.api.repositories.ImageRepository;
 import pis24l.projekt.api.repositories.ProductRepository;
 import pis24l.projekt.api.service.ProductSearchService;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
@@ -22,26 +24,31 @@ import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class ProductSearchServiceTest {
 
     @Mock
     private ProductRepository productRepository;
-
+    @Mock
+    private ImageRepository imageRepository;
     @Mock
     private EntityManager entityManager;
 
     @InjectMocks
-    private ProductSearchService productService;
+    private ProductSearchService productSearchService;
+
+
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        productService.setEntityManager(entityManager); // Manually inject the mock EntityManager
+        productSearchService.setEntityManager(entityManager); // Manually inject the mock EntityManager
     }
 
     private void setupMockQuery(List<Product> productList, long total) {
@@ -56,7 +63,6 @@ public class ProductSearchServiceTest {
         when(entityManager.createQuery(criteriaQuery)).thenReturn(typedQuery);
         when(typedQuery.getResultList()).thenReturn(productList);
 
-        // Ensure method chaining by returning the same mock for setFirstResult and setMaxResults
         when(typedQuery.setFirstResult(anyInt())).thenReturn(typedQuery);
         when(typedQuery.setMaxResults(anyInt())).thenReturn(typedQuery);
 
@@ -86,14 +92,14 @@ public class ProductSearchServiceTest {
         Pageable pageable = PageRequest.of(0, 10);
 
         List<Product> productList = new ArrayList<>();
-        Product product = new Product("xd", BigDecimal.valueOf(20), "Warszawa", LocalDateTime.now(), "xd", 0L, 0L, "XD");
+        Product product = new Product("xd", BigDecimal.valueOf(20), "Warszawa", LocalDateTime.now(), "xd", 0L, 0L);
         productList.add(product);
         long total = 1;
 
         setupMockQuery(productList, total);
 
         // When
-        Page<Product> result = productService.searchProducts(search, category, subcategory, minPrice, maxPrice, location, pageable);
+        Page<Product> result = productSearchService.searchProducts(search, category, subcategory, minPrice, maxPrice, location, pageable);
 
         // Then
         assertEquals(1, result.getTotalElements());
@@ -112,14 +118,14 @@ public class ProductSearchServiceTest {
         Pageable pageable = PageRequest.of(0, 10);
 
         List<Product> productList = new ArrayList<>();
-        Product product = new Product("xd", BigDecimal.valueOf(20), "Warszawa", LocalDateTime.now(), "xd", 0L, 0L, "XD");
+        Product product = new Product("xd", BigDecimal.valueOf(20), "Warszawa", LocalDateTime.now(), "xd", 0L, 0L);
         productList.add(product);
         long total = 1;
 
         setupMockQuery(productList, total);
 
         // When
-        Page<Product> result = productService.searchProducts(search, category, subcategory, minPrice, maxPrice, location, pageable);
+        Page<Product> result = productSearchService.searchProducts(search, category, subcategory, minPrice, maxPrice, location, pageable);
 
         // Then
         assertEquals(1, result.getTotalElements());
@@ -138,14 +144,14 @@ public class ProductSearchServiceTest {
         Pageable pageable = PageRequest.of(0, 10);
 
         List<Product> productList = new ArrayList<>();
-        Product product = new Product("xd", BigDecimal.valueOf(20), "Warszawa", LocalDateTime.now(), "xd", 0L, 0L, "XD");
+        Product product = new Product("xd", BigDecimal.valueOf(20), "Warszawa", LocalDateTime.now(), "xd", 0L, 0L);
         productList.add(product);
         long total = 1;
 
         setupMockQuery(productList, total);
 
         // When
-        Page<Product> result = productService.searchProducts(search, category, subcategory, minPrice, maxPrice, location, pageable);
+        Page<Product> result = productSearchService.searchProducts(search, category, subcategory, minPrice, maxPrice, location, pageable);
 
         // Then
         assertEquals(1, result.getTotalElements());
@@ -164,14 +170,14 @@ public class ProductSearchServiceTest {
         Pageable pageable = PageRequest.of(0, 10);
 
         List<Product> productList = new ArrayList<>();
-        Product product = new Product("xd", BigDecimal.valueOf(20), "Warszawa", LocalDateTime.now(), "xd", 0L, 0L, "XD");
+        Product product = new Product("xd", BigDecimal.valueOf(20), "Warszawa", LocalDateTime.now(), "xd", 0L, 0L);
         productList.add(product);
         long total = 1;
 
         setupMockQuery(productList, total);
 
         // When
-        Page<Product> result = productService.searchProducts(search, category, subcategory, minPrice, maxPrice, location, pageable);
+        Page<Product> result = productSearchService.searchProducts(search, category, subcategory, minPrice, maxPrice, location, pageable);
 
         // Then
         assertEquals(1, result.getTotalElements());
@@ -190,14 +196,14 @@ public class ProductSearchServiceTest {
         Pageable pageable = PageRequest.of(0, 10);
 
         List<Product> productList = new ArrayList<>();
-        Product product = new Product("xd", BigDecimal.valueOf(20), "Warszawa", LocalDateTime.now(), "xd", 0L, 0L, "XD");
+        Product product = new Product("xd", BigDecimal.valueOf(20), "Warszawa", LocalDateTime.now(), "xd", 0L, 0L);
         productList.add(product);
         long total = 1;
 
         setupMockQuery(productList, total);
 
         // When
-        Page<Product> result = productService.searchProducts(search, category, subcategory, minPrice, maxPrice, location, pageable);
+        Page<Product> result = productSearchService.searchProducts(search, category, subcategory, minPrice, maxPrice, location, pageable);
 
         // Then
         assertEquals(1, result.getTotalElements());
@@ -216,14 +222,14 @@ public class ProductSearchServiceTest {
         Pageable pageable = PageRequest.of(0, 10);
 
         List<Product> productList = new ArrayList<>();
-        Product product = new Product("xd", BigDecimal.valueOf(20), "Warszawa", LocalDateTime.now(), "xd", 0L, 0L, "XD");
+        Product product = new Product("xd", BigDecimal.valueOf(20), "Warszawa", LocalDateTime.now(), "xd", 0L, 0L);
         productList.add(product);
         long total = 1;
 
         setupMockQuery(productList, total);
 
         // When
-        Page<Product> result = productService.searchProducts(search, category, subcategory, minPrice, maxPrice, location, pageable);
+        Page<Product> result = productSearchService.searchProducts(search, category, subcategory, minPrice, maxPrice, location, pageable);
 
         // Then
         assertEquals(1, result.getTotalElements());
@@ -242,17 +248,53 @@ public class ProductSearchServiceTest {
         Pageable pageable = PageRequest.of(0, 10);
 
         List<Product> productList = new ArrayList<>();
-        Product product = new Product("xd", BigDecimal.valueOf(20), "Warszawa", LocalDateTime.now(), "xd", 0L, 0L, "XD");
+        Product product = new Product("xd", BigDecimal.valueOf(20), "Warszawa", LocalDateTime.now(), "xd", 0L, 0L);
         productList.add(product);
         long total = 1;
 
         setupMockQuery(productList, total);
 
         // When
-        Page<Product> result = productService.searchProducts(search, category, subcategory, minPrice, maxPrice, location, pageable);
+        Page<Product> result = productSearchService.searchProducts(search, category, subcategory, minPrice, maxPrice, location, pageable);
 
         // Then
         assertEquals(1, result.getTotalElements());
         assertEquals(1, result.getContent().size());
     }
+
+    @Test
+    public void testGetProductById_withImages() {
+        // Mock data
+        Long productId = 0L;
+        byte[] imageData = new byte[] {0,2,3,4};
+        Product product = new Product(productId,"XD",BigDecimal.valueOf(0));
+
+
+        // Mock behavior
+        when(productRepository.findById(productId)).thenReturn(Optional.of(product));
+        when(imageRepository.findByProductId(productId)).thenReturn(Collections.singletonList(new Image(0L,"test",imageData)));
+
+        // Call the method
+        Product result = productSearchService.getProductById(productId);
+
+        // Verify
+        assertNotNull(result);
+        assertEquals(productId, result.getId());
+        assertFalse(result.getImageUrls().isEmpty()); // Check if the list of URLs is not empty
+    }
+    @Test
+    void testGetProductById_notFound() {
+        // Mock data
+        when(productRepository.findById(1L)).thenReturn(Optional.empty());
+
+        // Test & Verify
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            productSearchService.getProductById(1L);
+        });
+        assertEquals("Product not found with id 1", exception.getMessage());
+
+        verify(productRepository, times(1)).findById(1L);
+    }
+
+
 }
