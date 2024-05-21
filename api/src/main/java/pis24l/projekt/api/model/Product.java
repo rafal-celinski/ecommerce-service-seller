@@ -4,6 +4,7 @@ import org.springframework.boot.convert.DataSizeUnit;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.validation.constraints.Size;
@@ -39,14 +40,18 @@ public class Product {
     @NotNull(message = "Subcategory cannot be null")
     private Long subcategory;
 
+    @Column(name="description")
+    private String description;
+
     protected Product() {}
-    public Product(String title, BigDecimal price, String location, LocalDateTime date, String image, Long subcategory, Long category) {
+    public Product(String title, BigDecimal price, String location, Long subcategory, Long category, String description) {
         this.title = title;
         this.price = price;
         this.location = location;
-        this.date = date;
+        this.date = LocalDateTime.now();
         this.category = category;
         this.subcategory = subcategory;
+        this.description = description;
     }
 
     public Long getId() {
@@ -56,6 +61,8 @@ public class Product {
     public String getTitle() {
         return title;
     }
+
+    public String getDescription() { return description; }
 
     public BigDecimal getPrice() {
         return price;
@@ -89,10 +96,6 @@ public class Product {
         this.location = location;
     }
 
-    public void setDateAdded(LocalDateTime dateAdded) {
-        this.date = dateAdded;
-    }
-
     public void setCategory(Long category) {
         this.category = category;
     }
@@ -100,4 +103,6 @@ public class Product {
     public void setSubcategory(Long subcategory) {
         this.subcategory = subcategory;
     }
+
+    public void setDescription(String description) { this.description = description; }
 }
