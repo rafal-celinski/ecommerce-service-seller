@@ -23,7 +23,6 @@ public class Image {
     @Column(name = "image")
     private byte[] image;
 
-    // Getters and setters
     public Long getId() {
         return id;
     }
@@ -56,7 +55,6 @@ public class Image {
         this.image = image;
     }
 
-    // Constructors
     public Image(Long productId, String name, byte[] image) {
         this.productId = productId;
         this.name = name;
@@ -66,3 +64,4 @@ public class Image {
     protected Image() {
     }
 }
+

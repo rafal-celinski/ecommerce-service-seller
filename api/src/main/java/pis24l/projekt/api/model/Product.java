@@ -1,13 +1,18 @@
 package pis24l.projekt.api.model;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.istack.NotNull;
+import org.springframework.boot.convert.DataSizeUnit;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import javax.validation.constraints.Size;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "product")
@@ -17,24 +22,42 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @NotNull(message = "Title cannot be null")
+    @Size(min = 1, max = 255, message = "Title must be between 1 and 255 characters")
     private String title;
 
-    @NotNull
+    @NotNull(message = "Price cannot be null")
+    @Min(value = 0, message = "Price must be greater than or equal to 0")
     private BigDecimal price;
 
-    private String description;
+    @NotNull(message = "Location cannot be null")
+    @Size(min = 1, max = 255, message = "Location must be between 1 and 255 characters")
+    private String location;
 
+    @Column(name = "date")
+    private LocalDateTime date;
+
+    @NotNull(message = "Category cannot be null")
     private Long category;
 
+
+    @NotNull(message = "Subcategory cannot be null")
     private Long subcategory;
 
+    @Column(name="description")
+    private String description;
+
+    @PrePersist
+    protected void onCreate() {
+        date = LocalDateTime.now();
+    }
+
     protected Product() {}
-    public Product(String title, BigDecimal price, String location, LocalDateTime dateAdded,String description, Long subcategory, Long category) {
+
+    public Product(String title, BigDecimal price, String location, Long subcategory, Long category, String description) {
         this.title = title;
         this.price = price;
         this.location = location;
-        this.date = dateAdded;
         this.category = category;
         this.subcategory = subcategory;
         this.description = description;
@@ -51,6 +74,7 @@ public class Product {
 
     @Column(name="date")
     private LocalDateTime date;
+  
     @Transient
     private List<String> imageUrls; // Add this field
 
@@ -70,6 +94,8 @@ public class Product {
         return title;
     }
 
+    public String getDescription() { return description; }
+
     public BigDecimal getPrice() {
         return price;
     }
@@ -82,13 +108,12 @@ public class Product {
         return date;
     }
 
-    public String getDescription() { return description; }
 
     public Long getCategory() {
         return category;
     }
 
-
+  
     public Long getSubcategory() {
         return subcategory;
     }
@@ -108,6 +133,10 @@ public class Product {
     public void setDescription(String description) {
         this.description = description;
     }
+  
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
     public void setCategory(Long category) {
         this.category = category;
@@ -115,10 +144,6 @@ public class Product {
 
     public void setSubcategory(Long subcategory) {
         this.subcategory = subcategory;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
     }
 
     public void setDate(LocalDateTime date) {
