@@ -1,5 +1,7 @@
 package pis24l.projekt.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -17,10 +19,9 @@ public class Image {
     private String name;
 
     @Lob
+    @JsonIgnore
     @Column(name = "image")
     private byte[] image;
-
-    // Getters and Setters
 
     public Long getId() {
         return id;
@@ -63,3 +64,4 @@ public class Image {
     protected Image() {
     }
 }
+

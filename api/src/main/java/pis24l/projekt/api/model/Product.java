@@ -1,11 +1,14 @@
 package pis24l.projekt.api.model;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.boot.convert.DataSizeUnit;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.validation.constraints.Size;
 import javax.validation.constraints.Min;
@@ -37,6 +40,7 @@ public class Product {
     @NotNull(message = "Category cannot be null")
     private Long category;
 
+
     @NotNull(message = "Subcategory cannot be null")
     private Long subcategory;
 
@@ -49,6 +53,7 @@ public class Product {
     }
 
     protected Product() {}
+
     public Product(String title, BigDecimal price, String location, Long subcategory, Long category, String description) {
         this.title = title;
         this.price = price;
@@ -58,7 +63,30 @@ public class Product {
         this.description = description;
     }
 
-    public Long getId() {
+    public Product(Long id, String title, BigDecimal price) {
+        this.id = id;
+        this.title = title;
+        this.price = price;
+    }
+
+    @NotNull
+    private String location;
+
+    @Column(name="date")
+    private LocalDateTime date;
+  
+    @Transient
+    private List<String> imageUrls; // Add this field
+
+    // Getters and setters for the new field
+    public List<String> getImageUrls() {
+        return imageUrls;
+    }
+
+    public void setImageUrls(List<String> imageUrls) {
+        this.imageUrls = imageUrls;
+    }
+        public Long getId() {
         return id;
     }
 
@@ -76,16 +104,22 @@ public class Product {
         return location;
     }
 
-    public LocalDateTime getDateAdded() {
+    public LocalDateTime getDate() {
         return date;
     }
+
 
     public Long getCategory() {
         return category;
     }
 
+  
     public Long getSubcategory() {
         return subcategory;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setTitle(String title) {
@@ -96,6 +130,10 @@ public class Product {
         this.price = price;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+  
     public void setLocation(String location) {
         this.location = location;
     }
@@ -108,5 +146,7 @@ public class Product {
         this.subcategory = subcategory;
     }
 
-    public void setDescription(String description) { this.description = description; }
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
 }
