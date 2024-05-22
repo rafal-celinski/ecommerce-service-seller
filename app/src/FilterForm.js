@@ -5,11 +5,11 @@ import './style.css';
 function FilterForm({setFilterData}) {
     const [formData, setFormData] = useState({
         search: '',
+
         category: '',
         subcategory: '',
         minPrice: '',
         maxPrice: '',
-
         location: '',
     });
 
@@ -31,6 +31,7 @@ function FilterForm({setFilterData}) {
         fetch('http://localhost:8080/categories')
             .then((response) => response.json())
             .then(categories => {
+
                 setCategories([{id: '', name: "Wszystkie"}, ...categories]);
             })
             .catch((error) => {
@@ -67,7 +68,6 @@ function FilterForm({setFilterData}) {
     }
     useEffect(updateSubcategories, [formData.category]);
 
-
          fetch('http://localhost:8080/subcategories/' + formData.category)
               .then((response) => response.json())
               .then(subcategories => {
@@ -78,6 +78,7 @@ function FilterForm({setFilterData}) {
               });
     }
     useEffect(updateSubcategories, [formData.category]);
+
 
 
     return (

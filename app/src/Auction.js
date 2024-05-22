@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Header from './Header';
-
 import './Auction.css';
+
 
 function Auction() {
     const { auctionId } = useParams();
@@ -13,6 +13,7 @@ function Auction() {
 
 
     function fetchAuction() {
+
         fetch(`http://localhost:8080/products/${auctionId}`)
             .then(response => response.json())
             .then(data => setAuction(data));
@@ -21,6 +22,7 @@ function Auction() {
     useEffect(fetchAuction, [auctionId]);
 
     function nextImage() {
+
         setCurrentImage((currentImage + 1) % auction.imageUrls.length);
     }
 
@@ -43,6 +45,7 @@ function Auction() {
                 <div className="ImageButtons">
                     <button className="prevImage" onClick={prevImage}> Poprzednie zdjęcie </button>
                     <button className="nextImage" onClick={nextImage}> Następne zdjęcie </button>
+
                 </div>
                 <div className="AuctionPrice">{auction.price} zł</div>
                 <div className="AuctionDescription">
