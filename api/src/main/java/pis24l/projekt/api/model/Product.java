@@ -68,12 +68,6 @@ public class Product {
         this.title = title;
         this.price = price;
     }
-
-    @NotNull
-    private String location;
-
-    @Column(name="date")
-    private LocalDateTime date;
   
     @Transient
     private List<String> imageUrls; // Add this field
