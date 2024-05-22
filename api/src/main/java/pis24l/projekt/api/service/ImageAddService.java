@@ -1,8 +1,7 @@
 package pis24l.projekt.api.service;
 
 import org.apache.commons.io.FilenameUtils;
-import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,13 +10,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.InputStream;
-
 @Service
 public class ImageAddService {
     private static final String DIRECTORY = System.getProperty("user.dir") + "/uploads";
+    private final FileStorage fileStorage;
+
+    @Autowired
+    public ImageAddService(FileStorage fileStorage) {
+        this.fileStorage = fileStorage;
+    }
 
     public void uploadImage(MultipartFile file, Long id) throws IOException {
         Path directoryPath = Paths.get(DIRECTORY);
@@ -27,9 +28,9 @@ public class ImageAddService {
         String fileName = file.getOriginalFilename();
         String fileExtension = FilenameUtils.getExtension(fileName);
         String saveFileName = id + "." + fileExtension;
-        Path filePath = directoryPath.resolve(saveFileName);
-        file.transferTo(filePath);
-        }
+        fileStorage.storeFile(directoryPath, file, saveFileName);
+    }
+
 
     public boolean isImageFile(MultipartFile file) {
         String fileName = file.getOriginalFilename();
