@@ -5,8 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import pis24l.projekt.api.model.Image;
+
+import pis24l.projekt.api.service.ImageAddService;
 import pis24l.projekt.api.repositories.ImageRepository;
+
+import pis24l.projekt.api.model.Image;
 
 import java.io.IOException;
 
@@ -14,26 +17,33 @@ import java.io.IOException;
 @RequestMapping("/images")
 public class ImageAddController {
 
+    private final ImageAddService imageAddService;
+
     private final ImageRepository imageRepository;
 
     @Autowired
-    public ImageAddController(ImageRepository imageRepository) {
+    public ImageAddController(ImageRepository imageRepository, ImageAddService imageAddService) {
         this.imageRepository = imageRepository;
+        this.imageAddService = imageAddService;
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addImage(
-            @RequestParam("productId") Long productId,
-            @RequestParam("name") String name,
-            @RequestParam("image") MultipartFile imageFile) {
-
+    public ResponseEntity<?> addFile(@RequestParam("image") MultipartFile file, @RequestParam("productId") Long productId) {
+        if (!imageAddService.isImageFile(file)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid file type.");
+        }
         try {
-            byte[] bytes = imageFile.getBytes();
-            Image image = new Image(productId, name, bytes);
+            Image image = new Image(productId);
             Image savedImage = imageRepository.save(image);
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedImage);
+
+            imageAddService.uploadImage(file, image.getId());
+            return ResponseEntity.ok(savedImage);
         } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing image");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload the file: " + e.getMessage());
+        } catch (Exception e) {
+            // Catch any other exceptions that might not have been anticipated
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred: " + e.getMessage());
         }
     }
 }
+

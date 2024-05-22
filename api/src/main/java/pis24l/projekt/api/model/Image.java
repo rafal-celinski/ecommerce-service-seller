@@ -15,14 +15,6 @@ public class Image {
     @Column(name = "product_id")
     private Long productId;
 
-    @Column(name = "name")
-    private String name;
-
-    @Lob
-    @JsonIgnore
-    @Column(name = "image")
-    private byte[] image;
-
     public Long getId() {
         return id;
     }
@@ -39,29 +31,9 @@ public class Image {
         this.productId = productId;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
-
-    public Image(Long productId, String name, byte[] image) {
+    public Image(Long productId) {
         this.productId = productId;
-        this.name = name;
-        this.image = image;
     }
-
-    protected Image() {
-    }
+    protected Image() { }
 }
 

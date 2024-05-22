@@ -266,7 +266,7 @@ public class ProductSearchServiceTest {
 
         // Mock behavior
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
-        when(imageRepository.findByProductId(productId)).thenReturn(Collections.singletonList(new Image(0L,"test",imageData)));
+        when(imageRepository.findByProductId(productId)).thenReturn(Collections.singletonList(new Image(0L)));
 
         // Call the method
         Product result = productSearchService.getProductById(productId);
