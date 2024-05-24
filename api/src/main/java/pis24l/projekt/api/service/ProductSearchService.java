@@ -10,7 +10,6 @@ import pis24l.projekt.api.repositories.ImageRepository;
 import pis24l.projekt.api.repositories.ProductRepository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Transient;
 import javax.persistence.criteria.*;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
@@ -75,13 +74,11 @@ public class ProductSearchService {
         // Fetch and set image URLs
         for (Product product : resultList) {
             List<Image> images = imageRepository.findByProductId(product.getId());
-            List<String> imageUrls = new ArrayList<>();
             if (!images.isEmpty()) {
                 Image firstImage = images.get(0); // Get the first image
                 String imageUrl = "/images/" + firstImage.getId(); // Map the URL
-                imageUrls.add(imageUrl); // Add the URL to the list
+                product.setImageUrls(List.of(imageUrl)); // Set the list with the single URL
             }
-            product.setImageUrls(imageUrls); // Set the list of URLs in the product
         }
 
         // Count total records for pagination metadata

@@ -5,8 +5,7 @@ import org.springframework.stereotype.Service;
 import pis24l.projekt.api.model.Image;
 import pis24l.projekt.api.repositories.ImageRepository;
 
-import javax.transaction.Transactional;
-import java.util.Optional;
+import java.util.List;
 
 @Service
 public class ImageSearchService {
@@ -18,8 +17,12 @@ public class ImageSearchService {
         this.imageRepository = imageRepository;
     }
 
-    @Transactional
-    public Optional<Image> getImageById(Long imageId) {
-        return imageRepository.findById(imageId);
+    public List<Image> getAllImagesForProduct(Long productId) {
+        return imageRepository.findByProductId(productId);
+    }
+
+    public Image getFirstImageForProduct(Long productId) {
+        List<Image> images = imageRepository.findByProductId(productId);
+        return images.isEmpty() ? null : images.get(0);
     }
 }
