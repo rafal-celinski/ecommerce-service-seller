@@ -7,7 +7,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import pis24l.projekt.api.model.Category;
 import pis24l.projekt.api.model.Subcategory;
-import pis24l.projekt.api.repositories.SubcategoryRepository;
 import pis24l.projekt.api.service.SubcategorySearchService;
 
 import java.util.ArrayList;

@@ -1,7 +1,5 @@
 package pis24l.projekt.api.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 
 @Entity
