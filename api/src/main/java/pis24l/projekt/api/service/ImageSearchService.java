@@ -1,28 +1,32 @@
 package pis24l.projekt.api.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import pis24l.projekt.api.model.Image;
-import pis24l.projekt.api.repositories.ImageRepository;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ImageSearchService {
 
-    private final ImageRepository imageRepository;
+    private final String uploadDir;
+    private final List<String> allowedExtensions = Arrays.asList("jpg", "jpeg", "png", "gif", "bmp");
 
-    @Autowired
-    public ImageSearchService(ImageRepository imageRepository) {
-        this.imageRepository = imageRepository;
+    public ImageSearchService(@Value("${upload.dir}") String uploadDir) {
+        this.uploadDir = uploadDir;
     }
 
-    public List<Image> getAllImagesForProduct(Long productId) {
-        return imageRepository.findByProductId(productId);
-    }
-
-    public Image getFirstImageForProduct(Long productId) {
-        List<Image> images = imageRepository.findByProductId(productId);
-        return images.isEmpty() ? null : images.get(0);
+    public Optional<Path> findImageFile(Long imageId) {
+        for (String extension : allowedExtensions) {
+            Path filePath = Paths.get(uploadDir, imageId + "." + extension);
+            if (Files.exists(filePath)) {
+                return Optional.of(filePath);
+            }
+        }
+        return Optional.empty();
     }
 }
