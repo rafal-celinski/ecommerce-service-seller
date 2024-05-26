@@ -5,16 +5,24 @@ pipeline {
         jdk "jdk17"
     }
     stages {
+        stage('Prepare') {
+                steps {
+                    configFileProvider([configFile(fileId: 'database_info', variable: 'DB_PROPERTIES')]) {
+                        sh 'cp $DB_PROPERTIES api/src/main/resources/application.properties'
+                    }
+                }
+        }
         stage('Compile') {
             steps {
                 step([$class: 'GitHubCommitStatusSetter'])
                 sh 'mvn -f api/pom.xml clean compile'
             }
         }
+
         stage('Test') {
-            steps {
-                sh 'mvn -f api/pom.xml test'
-            }
+                    steps {
+                        sh 'mvn -f api/pom.xml test'
+                    }
         }
         stage('Verify') {
             steps {
@@ -22,11 +30,11 @@ pipeline {
             }
 
         }
-	stage('Deploy') {
+	    stage('Deploy') {
             steps {
-		configFileProvider([configFile(fileId: 'maven_settings', variable: 'MAVEN_SETTINGS')]) {
+		        configFileProvider([configFile(fileId: 'maven_settings', variable: 'MAVEN_SETTINGS')]) {
         		sh 'mvn -s $MAVEN_SETTINGS -f api/pom.xml deploy'
-    		}                
+    		    }
             }
 
         }
