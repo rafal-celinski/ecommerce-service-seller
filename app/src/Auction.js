@@ -14,7 +14,7 @@ function Auction() {
 
     function fetchAuction() {
 
-        fetch(`http://localhost:8080/products/${auctionId}`)
+        fetch(process.env.REACT_APP_API_URL + `/products/${auctionId}`)
             .then(response => response.json())
             .then(data => setAuction(data));
     }
@@ -30,9 +30,15 @@ function Auction() {
         setCurrentImage((currentImage + auction.imageUrls.length - 1) % auction.imageUrls.length);
     }
 
+
     if (!auction) {
         return <div>Loading...</div>;
     }
+
+    if (auction.imageUrls === null) {
+        auction.imageUrls = [];
+    }
+
 
     return (
         <div>
@@ -40,7 +46,7 @@ function Auction() {
             <div className="Auction">
                 <div className="AuctionTitle">{auction.title}</div>
                 <div className="AuctionImage">
-                    <img src={"http://localhost:8080" + auction.imageUrls[currentImage]} alt="" />
+                    <img src={process.env.REACT_APP_API_URL + auction.imageUrls[currentImage]} alt="" />
                 </div>
                 <div className="ImageButtons">
                     <button className="prevImage" onClick={prevImage}> Poprzednie zdjęcie </button>
@@ -54,6 +60,6 @@ function Auction() {
             </div>
         </div>
     );
-};
+}
 
 export default Auction;

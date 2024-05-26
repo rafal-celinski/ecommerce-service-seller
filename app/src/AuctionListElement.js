@@ -1,9 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 import './AuctionListElement.css';
 
 function AuctionListElement({ auction }) {
+
+    if (auction.imageUrls === null) {
+        auction.imageUrls = [];
+    }
 
     function formatDate(stringDate) {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -14,7 +18,7 @@ function AuctionListElement({ auction }) {
     return (
         <div className="Element" key={auction.id}>
             <div className="Image">
-                <img src={"http://localhost:8080" + auction.imageUrls[0]} />
+                <img src={process.env.REACT_APP_API_URL + auction.imageUrls[0]} alt=""/>
             </div>
             <div className="Info">
                 <Link className="Title" to={`/auction/${auction.id}`}>

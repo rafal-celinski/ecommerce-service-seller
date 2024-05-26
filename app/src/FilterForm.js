@@ -28,7 +28,7 @@ function FilterForm({setFilterData}) {
 
     const [categories, setCategories] = useState([]);
     function updateCategories() {
-        fetch('http://localhost:8080/categories')
+        fetch(process.env.REACT_APP_API_URL + "/categories")
             .then((response) => response.json())
             .then(categories => {
 
@@ -49,7 +49,7 @@ function FilterForm({setFilterData}) {
     function updateSubcategories() {
 
         if (formData.category !== '') {
-            fetch('http://localhost:8080/subcategories/category?categoryId=' + formData.category)
+            fetch(process.env.REACT_APP_API_URL + "/subcategories/category?categoryId=" + formData.category)
                 .then((response) => response.json())
                 .then(subcategories => {
                     setSubcategories([{id: '', name: "Wszystkie"}, ...subcategories]);
@@ -67,19 +67,6 @@ function FilterForm({setFilterData}) {
 
     }
     useEffect(updateSubcategories, [formData.category]);
-
-         fetch('http://localhost:8080/subcategories/' + formData.category)
-              .then((response) => response.json())
-              .then(subcategories => {
-                  setSubcategories(subcategories);
-              })
-              .catch((error) => {
-                  console.error('Błąd podczas pobierania podkategorii:', error);
-              });
-    }
-    useEffect(updateSubcategories, [formData.category]);
-
-
 
     return (
         <div className='FilterForm'>

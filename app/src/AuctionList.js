@@ -18,20 +18,9 @@ function AuctionList({filterData}) {
 
     function fetchAuctions() {
         if (filterData) {
-            // fetch('http://localhost:8080/auctions', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify(filterData),
-            // })
-            //     .then(response => response.json())
-            //     .then(auctions => {
-            //         setAuctions(auctions);
-            //     });
 
             fetch(
-                "http://localhost:8080/products/search?" +
+                process.env.REACT_APP_API_URL + "/products/search?" +
                 "category=" + filterData.category +
                 "&subcategory=" + filterData.subcategory +
                 "&minPrice=" + filterData.minPrice +

@@ -17,7 +17,7 @@ function AddAuction() {
     });
 
     async function postAuction() {
-        fetch('http://localhost:8080/products/add', {
+        fetch(process.env.REACT_APP_API_URL + "/products/add", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -30,6 +30,9 @@ function AddAuction() {
                     var name = "img" + i + "_" + auction.id;
                     postImage(auction.id, name, images[i]);
                 }
+            })
+            .then(() => {
+            alert('Aukcja została pomyślnie dodana!');
             })
 
             .catch((error) => {
@@ -45,7 +48,7 @@ function AddAuction() {
         data.append('name', name);
         data.append('image', imageFile);
 
-        fetch('http://localhost:8080/images/add', {
+        fetch(process.env.REACT_APP_API_URL + "/images/add", {
             method: 'POST',
             body: data
         }).catch((error) => {
@@ -61,7 +64,7 @@ function AddAuction() {
 
 
 
-    };
+    }
 
     function handleChange(e) {
         const { name, value } = e.target;
@@ -78,7 +81,7 @@ function AddAuction() {
 
     const [categories, setCategories] = useState([]);
     function updateCategories() {
-        fetch('http://localhost:8080/categories')
+        fetch(process.env.REACT_APP_API_URL + '/categories')
             .then((response) => response.json())
             .then(categories => {
                 setCategories([{id: '', name: "Wybierz..."}, ...categories]);
@@ -96,7 +99,7 @@ function AddAuction() {
     const [subcategories, setSubcategories] = useState([]);
     function updateSubcategories() {
         if (formData.category !== '') {
-            fetch('http://localhost:8080/subcategories/category?categoryId=' + formData.category)
+            fetch(process.env.REACT_APP_API_URL + '/subcategories/category?categoryId=' + formData.category)
                 .then((response) => response.json())
                 .then(subcategories => {
                     setSubcategories([{id: '', name: "Wybierz..."}, ...subcategories]);
