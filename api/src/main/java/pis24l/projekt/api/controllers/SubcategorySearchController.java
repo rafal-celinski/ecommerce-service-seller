@@ -7,6 +7,7 @@ import pis24l.projekt.api.service.SubcategorySearchService;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:5000")
 @RestController
 @RequestMapping("/subcategories")
 public class SubcategorySearchController {

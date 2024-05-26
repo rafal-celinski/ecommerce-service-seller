@@ -11,6 +11,7 @@ import pis24l.projekt.api.repositories.ProductRepository;
 import javax.validation.Valid;
 import java.util.Optional;
 
+@CrossOrigin(origins = "http://localhost:5000")
 @RestController
 @RequestMapping("/products")
 public class ProductUpdateController {

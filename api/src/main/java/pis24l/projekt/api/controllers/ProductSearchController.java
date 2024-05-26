@@ -10,6 +10,7 @@ import pis24l.projekt.api.service.ProductSearchService;
 
 import java.math.BigDecimal;
 
+@CrossOrigin(origins = "http://localhost:5000")
 @RestController
 @RequestMapping("/products")
 public class ProductSearchController {
