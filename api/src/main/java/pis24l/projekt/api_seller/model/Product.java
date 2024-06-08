@@ -1,6 +1,8 @@
 package pis24l.projekt.api_seller.model;
 
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -10,8 +12,8 @@ import javax.validation.constraints.Size;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+@Document(collection = "product")
 @Entity
-@Table(name = "product")
 public class Product {
 
     @Id
