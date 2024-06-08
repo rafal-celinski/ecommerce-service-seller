@@ -22,7 +22,7 @@ public class SubcategorySearchService {
         return subcategoryRepository.findAll();
     }
 
-    public List<Subcategory> getSubcategoriesByCategoryId(Long categoryId) {
-        return subcategoryRepository.findSubcategoriesByCategoryId(categoryId);
+    public List<Subcategory> getSubcategoriesByCategoryId(String categoryId) {
+        return subcategoryRepository.findByCategoryId(categoryId);
     }
 }

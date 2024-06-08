@@ -1,12 +1,9 @@
 package pis24l.projekt.api_seller.repositories;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import pis24l.projekt.api_seller.model.Subcategory;
-
 import java.util.List;
 
-@Repository
-public interface SubcategoryRepository extends JpaRepository<Subcategory, Long> {
-    List<Subcategory> findSubcategoriesByCategoryId(Long categoryId);
+public interface SubcategoryRepository extends MongoRepository<Subcategory, String> {
+    List<Subcategory> findByCategoryId(String categoryId);
 }

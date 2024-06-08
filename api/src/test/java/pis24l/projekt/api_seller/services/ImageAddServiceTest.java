@@ -34,7 +34,7 @@ class ImageAddServiceTest {
     @Test
     void uploadImage_whenCalled_verifiesMethodCalls() throws IOException {
         MockMultipartFile file = new MockMultipartFile("image", "filename.jpg", "image/jpeg", "some data".getBytes());
-        Long id = 1L;
+        String id = "abba";
         String saveFileName = id + ".jpg";
 
         imageAddService.uploadImage(file, id);

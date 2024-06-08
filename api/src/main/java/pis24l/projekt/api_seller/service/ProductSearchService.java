@@ -2,18 +2,18 @@ package pis24l.projekt.api_seller.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import pis24l.projekt.api_seller.model.Image;
 import pis24l.projekt.api_seller.model.Product;
 import pis24l.projekt.api_seller.repositories.ImageRepository;
 import pis24l.projekt.api_seller.repositories.ProductRepository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.*;
-import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,53 +23,41 @@ public class ProductSearchService {
 
     private final ProductRepository productRepository;
     private final ImageRepository imageRepository;
-    private EntityManager entityManager;
+    private final MongoTemplate mongoTemplate;
 
     @Autowired
-    public ProductSearchService(ProductRepository productRepository, EntityManager entityManager, ImageRepository imageRepository) {
+    public ProductSearchService(ProductRepository productRepository, ImageRepository imageRepository, MongoTemplate mongoTemplate) {
         this.imageRepository = imageRepository;
         this.productRepository = productRepository;
-        this.entityManager = entityManager;
+        this.mongoTemplate = mongoTemplate;
     }
 
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
-
-    @Transactional
-    public Page<Product> searchProducts(String search, Long category, Long subcategory, BigDecimal minPrice, BigDecimal maxPrice, String location, Pageable pageable) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Product> query = cb.createQuery(Product.class);
-        Root<Product> root = query.from(Product.class);
-
-        List<Predicate> predicates = new ArrayList<>();
+    public Page<Product> searchProducts(String search, String category, String subcategory, BigDecimal minPrice, BigDecimal maxPrice, String location, Pageable pageable) {
+        Query query = new Query();
 
         if (search != null && !search.isEmpty()) {
-            predicates.add(cb.like(root.get("title"), "%" + search + "%"));
+            query.addCriteria(Criteria.where("title").regex(search, "i"));
         }
-        if (category != null) {
-            predicates.add(cb.equal(root.get("category"), category));
+        if (category != null && !category.isEmpty()) {
+            query.addCriteria(Criteria.where("category").is(category));
         }
-        if (subcategory != null) {
-            predicates.add(cb.equal(root.get("subcategory"), subcategory));
+        if (subcategory != null && !subcategory.isEmpty()) {
+            query.addCriteria(Criteria.where("subcategory").is(subcategory));
         }
         if (minPrice != null) {
-            predicates.add(cb.greaterThanOrEqualTo(root.get("price"), minPrice));
+            query.addCriteria(Criteria.where("price").gte(minPrice));
         }
         if (maxPrice != null) {
-            predicates.add(cb.lessThanOrEqualTo(root.get("price"), maxPrice));
+            query.addCriteria(Criteria.where("price").lte(maxPrice));
         }
         if (location != null && !location.isEmpty()) {
-            predicates.add(cb.like(root.get("location"), "%" + location + "%"));
+            query.addCriteria(Criteria.where("location").regex(location, "i"));
         }
 
-        query.where(predicates.toArray(new Predicate[0]));
+        long total = mongoTemplate.count(query, Product.class);
 
-        // Add pagination
-        List<Product> resultList = entityManager.createQuery(query)
-                .setFirstResult((int) pageable.getOffset())
-                .setMaxResults(pageable.getPageSize())
-                .getResultList();
+        query.with(pageable);
+        List<Product> resultList = mongoTemplate.find(query, Product.class);
 
         // Fetch and set image URLs
         for (Product product : resultList) {
@@ -81,17 +69,10 @@ public class ProductSearchService {
             }
         }
 
-        // Count total records for pagination metadata
-        CriteriaQuery<Long> countQuery = cb.createQuery(Long.class);
-        Root<Product> countRoot = countQuery.from(Product.class);
-        countQuery.select(cb.count(countRoot)).where(predicates.toArray(new Predicate[0]));
-        Long count = entityManager.createQuery(countQuery).getSingleResult();
-
-        return new org.springframework.data.domain.PageImpl<>(resultList, pageable, count);
+        return new PageImpl<>(resultList, pageable, total);
     }
 
-    @Transactional
-    public Product getProductById(Long productId) {
+    public Product getProductById(String productId) {
         Optional<Product> productOptional = productRepository.findById(productId);
         if (productOptional.isPresent()) {
             Product product = productOptional.get();

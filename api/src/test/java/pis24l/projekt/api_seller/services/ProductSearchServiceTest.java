@@ -257,7 +257,7 @@ public class ProductSearchServiceTest {
     @Test
     public void testGetProductById_withImages() {
         // Mock data
-        Long productId = 0L;
+        String productId = "abba";
         byte[] imageData = new byte[] {0,2,3,4};
         Product product = new Product(productId,"XD",BigDecimal.valueOf(0));
 

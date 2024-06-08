@@ -25,7 +25,7 @@ public class SubcategorySearchController {
     }
 
     @GetMapping("/category")
-    public List<Subcategory> getSubcategoriesByCategoryId(@RequestParam Long categoryId) {
+    public List<Subcategory> getSubcategoriesByCategoryId(@RequestParam String categoryId) {
         return subcategoryService.getSubcategoriesByCategoryId(categoryId);
     }
 

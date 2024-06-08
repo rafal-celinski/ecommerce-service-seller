@@ -1,71 +1,40 @@
 package pis24l.projekt.api_seller.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
-import javax.validation.constraints.Size;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-
-@Entity
-@Table(name = "product")
+@Document(collection = "product")
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @NotNull(message = "Title cannot be null")
-    @Size(min = 1, max = 255, message = "Title must be between 1 and 255 characters")
+    private String id;
+    private String category;
+    private String subcategory;
     private String title;
-
-    @NotNull(message = "Price cannot be null")
-    @Min(value = 0, message = "Price must be greater than or equal to 0")
-    private BigDecimal price;
-
-    @NotNull(message = "Location cannot be null")
-    @Size(min = 1, max = 255, message = "Location must be between 1 and 255 characters")
+    private String description;
+    private Long price;
+    private Date date;
     private String location;
 
-    @Column(name = "date")
-    private LocalDateTime date;
-
-    @NotNull(message = "Category cannot be null")
-    private Long category;
-
-
-    @NotNull(message = "Subcategory cannot be null")
-    private Long subcategory;
-
-    @Column(name="description")
-    private String description;
-
-    @PrePersist
-    protected void onCreate() {
-        date = LocalDateTime.now();
-    }
-
-    protected Product() {}
-
-    public Product(String title, BigDecimal price, String location, Long subcategory, Long category, String description) {
-        this.title = title;
-        this.price = price;
-        this.location = location;
+    // Gettery i settery
+    public Product(String category,
+                   String subcategory,
+                   String title,
+                   String description,
+                   Long price,
+                   String location) {
         this.category = category;
         this.subcategory = subcategory;
+        this.title = title;
         this.description = description;
+        this.price = price;
+        this.location = location;
+        this.date = new Date();
     }
 
-    public Product(Long id, String title, BigDecimal price) {
-        this.id = id;
-        this.title = title;
-        this.price = price;
-    }
-  
-    @Transient
     private List<String> imageUrls; // Add this field
 
     // Getters and setters for the new field
@@ -76,67 +45,68 @@ public class Product {
     public void setImageUrls(List<String> imageUrls) {
         this.imageUrls = imageUrls;
     }
-        public Long getId() {
+
+    public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getSubcategory() {
+        return subcategory;
+    }
+
+    public void setSubcategory(String subcategory) {
+        this.subcategory = subcategory;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public String getDescription() { return description; }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-    public BigDecimal getPrice() {
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Long getPrice() {
         return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public String getLocation() {
         return location;
     }
 
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-
-    public Long getCategory() {
-        return category;
-    }
-
-  
-    public Long getSubcategory() {
-        return subcategory;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-  
     public void setLocation(String location) {
         this.location = location;
-    }
-
-    public void setCategory(Long category) {
-        this.category = category;
-    }
-
-    public void setSubcategory(Long subcategory) {
-        this.subcategory = subcategory;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
     }
 }

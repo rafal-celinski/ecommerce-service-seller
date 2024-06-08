@@ -1,37 +1,34 @@
 package pis24l.projekt.api_seller.model;
 
-import javax.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name = "image")
+@Document(collection = "image")
 public class Image {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
+    private String productId;
 
-    @Column(name = "product_id")
-    private Long productId;
+    public Image(String productId) {
+        this.productId = productId;
+    }
 
-    public Long getId() {
+    public Image() {}
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public Long getProductId() {
+    public String getProductId() {
         return productId;
     }
 
-    public void setProductId(Long productId) {
+    public void setProductId(String productId) {
         this.productId = productId;
     }
-
-    public Image(Long productId) {
-        this.productId = productId;
-    }
-    protected Image() { }
 }
-
