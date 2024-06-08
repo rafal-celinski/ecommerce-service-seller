@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  elasticsearch:
+      image: elasticsearch:8.14.0
+      environment:
+        - discovery.type=single-node
+        - xpack.security.enabled=true
+        - ELASTIC_PASSWORD=${ELASTIC_PASSWORD} 
+        - xpack.security.http.ssl.enabled=false
+      ports:
+          - "9200:9200"
+      volumes:
+        - elastic_data:/usr/share/elasticsearch/data
+volumes:
+  elastic_data:

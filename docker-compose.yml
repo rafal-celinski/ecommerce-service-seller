@@ -12,6 +12,8 @@ services:
       service: api
     depends_on:
       - postgres
+      - kafka
+      - elasticsearch
 
   app:
     extends:
@@ -19,6 +21,24 @@ services:
       service: app
     depends_on:
       - api
+  
+  zookeeper:
+    extends:
+      file: docker-compose-kafka.yml
+      service: zookeeper
+
+  kafka:
+    extends:
+      file: docker-compose-kafka.yml
+      service: kafka
+    depends_on:
+      - zookeeper
+
+  elasticsearch:
+    extends:
+      file: docker-compose-elasticsearch.yml
+      service: elasticsearch
 
 volumes:
   postgres_data:
+  elastic_data:
