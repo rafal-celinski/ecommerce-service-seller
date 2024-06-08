@@ -17,8 +17,7 @@ import javax.validation.constraints.NotNull;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @NotNull(message = "Title cannot be null")
     @Size(min = 1, max = 255, message = "Title must be between 1 and 255 characters")
@@ -37,7 +36,6 @@ public class Product {
 
     @NotNull(message = "Category cannot be null")
     private Long category;
-
 
     @NotNull(message = "Subcategory cannot be null")
     private Long subcategory;
@@ -61,16 +59,23 @@ public class Product {
         this.description = description;
     }
 
-    public Product(Long id, String title, BigDecimal price) {
+    public Product(String id, String title, BigDecimal price) {
         this.id = id;
         this.title = title;
         this.price = price;
     }
-  
-    @Transient
-    private List<String> imageUrls; // Add this field
+    public Product(String title, BigDecimal price, String location, Long subcategory, Long category, String description, List<String> imageUrls) {
+        this.title = title;
+        this.price = price;
+        this.location = location;
+        this.category = category;
+        this.subcategory = subcategory;
+        this.description = description;
+        this.imageUrls = imageUrls;
+    }
 
-    // Getters and setters for the new field
+    @Transient
+    private List<String> imageUrls;
     public List<String> getImageUrls() {
         return imageUrls;
     }
@@ -78,7 +83,7 @@ public class Product {
     public void setImageUrls(List<String> imageUrls) {
         this.imageUrls = imageUrls;
     }
-        public Long getId() {
+    public String getId() {
         return id;
     }
 
@@ -105,12 +110,12 @@ public class Product {
         return category;
     }
 
-  
+
     public Long getSubcategory() {
         return subcategory;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

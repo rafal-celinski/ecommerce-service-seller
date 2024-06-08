@@ -11,7 +11,7 @@ import pis24l.projekt.api_seller.model.Product;
 
 import javax.validation.Valid;
 
-@CrossOrigin(origins = "http://localhost:5000")
+
 @RestController
 @RequestMapping("/products/add")
 public class ProductAddController {

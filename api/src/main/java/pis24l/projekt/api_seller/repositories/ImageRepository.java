@@ -7,6 +7,6 @@ import pis24l.projekt.api_seller.model.Image;
 import java.util.List;
 @Repository
 public interface ImageRepository extends MongoRepository<Image, Long> {
-    List<Image> findByProductId(Long productId);
+    List<Image> findByProductId(String productId);
 
 }
