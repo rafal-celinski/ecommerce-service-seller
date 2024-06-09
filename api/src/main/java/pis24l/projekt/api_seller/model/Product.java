@@ -1,9 +1,10 @@
 package pis24l.projekt.api_seller.model;
 
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,8 +13,7 @@ import javax.validation.constraints.Size;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-@Document(collection = "product")
-@Entity
+@Document(collection = "products")
 public class Product {
 
     @Id
@@ -31,7 +31,7 @@ public class Product {
     @Size(min = 1, max = 255, message = "Location must be between 1 and 255 characters")
     private String location;
 
-    @Column(name = "date")
+    @CreatedDate
     private LocalDateTime date;
 
     @NotNull(message = "Category cannot be null")
@@ -40,15 +40,11 @@ public class Product {
     @NotNull(message = "Subcategory cannot be null")
     private Long subcategory;
 
-    @Column(name="description")
     private String description;
 
-    @PrePersist
-    protected void onCreate() {
-        date = LocalDateTime.now();
+    protected Product() {
+        this.date = LocalDateTime.now();
     }
-
-    protected Product() {}
 
     public Product(String title, BigDecimal price, String location, Long subcategory, Long category, String description) {
         this.title = title;
@@ -57,25 +53,17 @@ public class Product {
         this.category = category;
         this.subcategory = subcategory;
         this.description = description;
+        this.date = LocalDateTime.now();
     }
+
+    private List<String> imageUrls;
 
     public Product(String id, String title, BigDecimal price) {
         this.id = id;
         this.title = title;
         this.price = price;
     }
-    public Product(String title, BigDecimal price, String location, Long subcategory, Long category, String description, List<String> imageUrls) {
-        this.title = title;
-        this.price = price;
-        this.location = location;
-        this.category = category;
-        this.subcategory = subcategory;
-        this.description = description;
-        this.imageUrls = imageUrls;
-    }
 
-    @Transient
-    private List<String> imageUrls;
     public List<String> getImageUrls() {
         return imageUrls;
     }
@@ -104,7 +92,6 @@ public class Product {
     public LocalDateTime getDate() {
         return date;
     }
-
 
     public Long getCategory() {
         return category;

@@ -3,7 +3,7 @@ package pis24l.projekt.api_seller.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pis24l.projekt.api_seller.model.Category;
-import pis24l.projekt.api_seller.repositories.CategoryRepository;
+import pis24l.projekt.api_seller.repositories.mongo.CategoryRepository;
 import java.util.List;
 
 @Service

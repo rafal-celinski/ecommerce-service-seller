@@ -8,15 +8,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import pis24l.projekt.api_seller.model.Image;
 import pis24l.projekt.api_seller.model.Product;
-import pis24l.projekt.api_seller.repositories.ImageRepository;
-import pis24l.projekt.api_seller.repositories.ProductRepository;
+import pis24l.projekt.api_seller.repositories.mongo.ImageRepository;
+import pis24l.projekt.api_seller.repositories.mongo.ProductRepository;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductSearchService {

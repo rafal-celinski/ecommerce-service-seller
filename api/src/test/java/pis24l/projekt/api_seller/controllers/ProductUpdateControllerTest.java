@@ -15,7 +15,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import pis24l.projekt.api_seller.repositories.ProductRepository;
+import pis24l.projekt.api_seller.repositories.mongo.ProductRepository;
 import pis24l.projekt.api_seller.model.Product;
 
 import java.math.BigDecimal;
@@ -34,8 +34,8 @@ public class ProductUpdateControllerTest {
     @Test
     public void whenUpdateProductWithExistingId_thenProductIsUpdated() throws Exception {
         Product product = new Product("Laptop", BigDecimal.valueOf(1200.00), "Online", 1L, 1L, "High performance laptop");
-        product.setId(1L);
-        given(productRepository.findById(1L)).willReturn(Optional.of(product));
+        product.setId("XDXD");
+        given(productRepository.findById("XDXD")).willReturn(Optional.of(product));
         given(productRepository.save(any(Product.class))).willReturn(product);
 
         mockMvc.perform(put("/products/update/{id}", 1L)
@@ -55,7 +55,7 @@ public class ProductUpdateControllerTest {
 
     @Test
     public void whenUpdateProductWithNonExistingId_thenNotFound() throws Exception {
-        given(productRepository.findById(2L)).willReturn(Optional.empty());
+        given(productRepository.findById("XDXD")).willReturn(Optional.empty());
 
         mockMvc.perform(put("/products/update/{id}", 2L)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -68,8 +68,8 @@ public class ProductUpdateControllerTest {
     @Test
     public void whenUpdateProductWithExistingIdButIncorrectData_thenProductIsNotUpdated() throws Exception {
         Product product = new Product("Laptop", BigDecimal.valueOf(1200.00), "Online", 1L, 1L, "High performance laptop");
-        product.setId(1L);
-        given(productRepository.findById(1L)).willReturn(Optional.of(product));
+        product.setId("XDXD");
+        given(productRepository.findById("XDXD")).willReturn(Optional.of(product));
         given(productRepository.save(any(Product.class))).willReturn(product);
 
         mockMvc.perform(put("/products/update/{id}", 1L)
