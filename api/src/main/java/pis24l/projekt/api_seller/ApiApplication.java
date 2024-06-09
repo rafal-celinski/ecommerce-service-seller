@@ -11,7 +11,6 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 
 @SpringBootApplication()
 @EnableMongoRepositories(basePackages = "pis24l.projekt.api_seller.repositories.mongo")
-@EnableElasticsearchRepositories(basePackages = "pis24l.projekt.api_seller.repositories.elastic")
 public class ApiApplication {
 
     public static void main(String[] args) {

@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import pis24l.projekt.api_seller.model.Product;
 import pis24l.projekt.api_seller.repositories.mongo.ProductRepository;
-import pis24l.projekt.api_seller.repositories.elastic.ProductAddRepository;
 
 import javax.validation.Valid;
 
@@ -17,12 +16,10 @@ import javax.validation.Valid;
 public class ProductAddController {
 
     private final ProductRepository productRepository;
-    private final ProductAddRepository productAddRepository;
 
     @Autowired
-    public ProductAddController(ProductRepository productRepository, ProductAddRepository productAddRepository) {
+    public ProductAddController(ProductRepository productRepository) {
         this.productRepository = productRepository;
-        this.productAddRepository = productAddRepository;
     }
 
     @PostMapping("/add")
@@ -31,7 +28,6 @@ public class ProductAddController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getAllErrors());
         }
         Product savedProduct = productRepository.save(product);
-        productAddRepository.save(savedProduct); // Save to Elasticsearch
         return ResponseEntity.ok(savedProduct);
     }
 }

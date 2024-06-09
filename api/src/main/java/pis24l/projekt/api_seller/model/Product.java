@@ -5,7 +5,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,9 +42,10 @@ public class Product {
 
     private String description;
 
-    protected Product() {
-        this.date = LocalDateTime.now();
-    }
+    private List<String> imageUrls;
+
+
+    protected Product() {this.date = LocalDateTime.now();}
 
     public Product(String title, BigDecimal price, String location, Long subcategory, Long category, String description) {
         this.title = title;
@@ -57,21 +57,29 @@ public class Product {
         this.date = LocalDateTime.now();
     }
 
-    private List<String> imageUrls;
-
     public Product(String id, String title, BigDecimal price) {
         this.id = id;
         this.title = title;
         this.price = price;
     }
 
+    public Product(String id, String title, BigDecimal price, String location, Long subcategory, Long category, String description, List<String> imageUrls) {
+        this.id = id;
+        this.title = title;
+        this.price = price;
+        this.location = location;
+        this.category = category;
+        this.subcategory = subcategory;
+        this.description = description;
+        this.imageUrls = imageUrls;
+        this.date = LocalDateTime.now();
+    }
+
+
     public List<String> getImageUrls() {
         return imageUrls;
     }
 
-    public void setImageUrls(List<String> imageUrls) {
-        this.imageUrls = imageUrls;
-    }
     public String getId() {
         return id;
     }
@@ -97,7 +105,6 @@ public class Product {
     public Long getCategory() {
         return category;
     }
-
 
     public Long getSubcategory() {
         return subcategory;
@@ -133,5 +140,9 @@ public class Product {
 
     public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    public void setImageUrls(List<String> imageUrls) {
+        this.imageUrls = imageUrls;
     }
 }
