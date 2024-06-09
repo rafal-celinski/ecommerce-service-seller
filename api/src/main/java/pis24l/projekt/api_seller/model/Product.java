@@ -1,7 +1,10 @@
 package pis24l.projekt.api_seller.model;
 
 
-import org.springframework.data.mongodb.core.mapping.Document;
+
+
+
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -12,7 +15,8 @@ import javax.validation.constraints.Size;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-@Document(collection = "product")
+@Document(indexName = "products") // Elasticsearch index name
+@org.springframework.data.mongodb.core.mapping.Document(collection = "products")
 @Entity
 public class Product {
 
