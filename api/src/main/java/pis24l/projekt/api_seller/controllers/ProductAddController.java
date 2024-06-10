@@ -7,19 +7,23 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import pis24l.projekt.api_seller.model.Product;
+import pis24l.projekt.api_seller.repositories.elastic.ProductAddRepository;
 import pis24l.projekt.api_seller.repositories.mongo.ProductRepository;
 
 import javax.validation.Valid;
+import java.time.OffsetDateTime;
 
 @RestController
 @RequestMapping("/products")
 public class ProductAddController {
 
     private final ProductRepository productRepository;
+    private final ProductAddRepository productAddRepository;
 
     @Autowired
-    public ProductAddController(ProductRepository productRepository) {
+    public ProductAddController(ProductRepository productRepository, ProductAddRepository productAddRepository) {
         this.productRepository = productRepository;
+        this.productAddRepository = productAddRepository;
     }
 
     @PostMapping("/add")
@@ -28,6 +32,7 @@ public class ProductAddController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getAllErrors());
         }
         Product savedProduct = productRepository.save(product);
+        productAddRepository.save(product);
         return ResponseEntity.ok(savedProduct);
     }
 }
