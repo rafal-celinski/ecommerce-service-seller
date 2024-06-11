@@ -30,7 +30,7 @@ public class ProductSearchService {
         this.productAddRepository = productAddRepository;
     }
 
-    public Page<Product> searchProducts(String search, Long category, Long subcategory, BigDecimal minPrice, BigDecimal maxPrice, String location, Pageable pageable) {
+    public Page<Product> searchProducts(String search, String category, String subcategory, BigDecimal minPrice, BigDecimal maxPrice, String location, Pageable pageable) {
         Query query = new Query();
 
         if (search != null && !search.isEmpty()) {

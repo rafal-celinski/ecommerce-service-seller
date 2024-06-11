@@ -54,16 +54,17 @@ public class ProductSearchControllerTest {
         BigDecimal minPrice = BigDecimal.valueOf(0);
         BigDecimal maxPrice = BigDecimal.valueOf(100);
         String search = "searchTerm";
-        Long category = 1L;
-        Long subcategory = 2L;
+        String category = "dg";
+        String subcategory = "asjnf";
         String location = "location";
         Pageable pageable = PageRequest.of(0, 10);
 
         List<Product> productList = new ArrayList<>();
-        Product product = new Product("xd", BigDecimal.valueOf(20), "Warszawa", 0L, 0L, "xd");        productList.add(product);
+        Product product = new Product("xd", BigDecimal.valueOf(20), "Warszawa", "asf", "dsg", "xd");
+        productList.add(product);
         long total = 1;
 
-        when(productSearchService.searchProducts(anyString(), anyLong(), anyLong(), any(BigDecimal.class), any(BigDecimal.class), anyString(), eq(pageable)))
+        when(productSearchService.searchProducts(anyString(), anyString(), anyString(), any(BigDecimal.class), any(BigDecimal.class), anyString(), eq(pageable)))
                 .thenReturn(new PageImpl<>(productList, pageable, total));
 
         // When

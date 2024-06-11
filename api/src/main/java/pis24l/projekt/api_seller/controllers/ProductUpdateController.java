@@ -42,6 +42,7 @@ public class ProductUpdateController {
         updatedProduct.setSubcategory(product.getSubcategory());
         updatedProduct.setDescription(product.getDescription());
 
+
         productRepository.save(updatedProduct);
 
         return ResponseEntity.ok(updatedProduct);
