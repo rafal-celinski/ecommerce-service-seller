@@ -1,20 +1,24 @@
-package pis24l.projekt.api_seller.kafka.listeners;
+package pis24l.projekt.api_seller.kafka.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import pis24l.projekt.api_seller.kafka.model.OrderResponse;
 import pis24l.projekt.api_seller.kafka.model.ProductOrder;
 import pis24l.projekt.api_seller.service.ProductUpdateService;
-import pis24l.projekt.api_seller.service.exceptions.ProductStatusException;
 
 @Service
-public class OrderListener {
+public class OrderController {
 
     private final ProductUpdateService productUpdateService;
+    private final KafkaTemplate<String, OrderResponse> kafkaTemplate;
 
     @Autowired
-    public OrderListener(ProductUpdateService productUpdateService) {
+    public OrderController(ProductUpdateService productUpdateService, KafkaTemplate<String, OrderResponse> kafkaTemplate) {
         this.productUpdateService = productUpdateService;
+        this.kafkaTemplate = kafkaTemplate;
+
     }
 
     @KafkaListener(topics = "product_orders", groupId = "group_id")
@@ -22,16 +26,19 @@ public class OrderListener {
         System.out.println("Received product order: " + productOrder);
         try {
             updateProductStatus(productOrder.getProductId());
-        } catch (ProductStatusException e) {
-            System.err.println("ProductStatusException: " + e.getMessage());
-
+            sendOrderResponse(productOrder.getProductId(), "SUCCESS", "Order processed successfully.");
         } catch (Exception e) {
-            System.err.println("Exception: " + e.getMessage());
+            sendOrderResponse(productOrder.getProductId(), "ERROR", "Order processing failed: " + e.getMessage());
         }
     }
 
     private void updateProductStatus(String productId) {
         productUpdateService.updateProductStatus(productId, "Bought");
+    }
+
+    private void sendOrderResponse(String productId, String status, String message) {
+        OrderResponse orderResponse = new OrderResponse(productId, status, message);
+        kafkaTemplate.send("order_responses", orderResponse);
     }
 }
 
