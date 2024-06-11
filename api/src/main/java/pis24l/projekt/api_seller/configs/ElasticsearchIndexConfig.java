@@ -27,11 +27,10 @@ public class ElasticsearchIndexConfig {
         boolean exists = client.indices().exists(getIndexRequest, RequestOptions.DEFAULT);
         if (!exists) {
             CreateIndexRequest createIndexRequest = new CreateIndexRequest("products");
-            createIndexRequest.settings("""
-                    {
-                      "number_of_shards": 1,
-                      "number_of_replicas": 1
-                    }""", org.elasticsearch.common.xcontent.XContentType.JSON);
+            createIndexRequest.settings("{\n" +
+                    "  \"number_of_shards\": 1,\n" +
+                    "  \"number_of_replicas\": 1\n" +
+                    "}", org.elasticsearch.common.xcontent.XContentType.JSON);
 
             CreateIndexResponse createIndexResponse = client.indices().create(createIndexRequest, RequestOptions.DEFAULT);
             if (!createIndexResponse.isAcknowledged()) {
@@ -46,7 +45,7 @@ public class ElasticsearchIndexConfig {
                         "title": {"type": "text"},
                         "price": {"type": "float"},
                         "location": {"type": "text"},
-                        "date": {"type": "date", "format": "strict_date_optional_time||epoch_millis"},
+                        "date": {"type": "date", "format": "uuuu-MM-dd HH:mm:ss||uuuu-MM-dd||epoch_millis||strict_date_optional_time||strict_date"},
                         "category": {"type": "text"},
                         "subcategory": {"type": "text"},
                         "description": {"type": "text"},
