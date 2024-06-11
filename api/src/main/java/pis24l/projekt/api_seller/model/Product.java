@@ -35,6 +35,10 @@ public class Product {
     @Size(min = 1, max = 255, message = "Location must be between 1 and 255 characters")
     private String location;
 
+    @NotNull(message = "Status cannot be null")
+    @Size(min = 1, max = 20, message = "Status must be between 1 and 20 characters")
+    private String status;
+
 
     // @Field(type = FieldType.Date)
     private LocalDate date;
@@ -53,13 +57,22 @@ public class Product {
         // this.date = LocalDate.now();
         }
 
-    public Product(String title, BigDecimal price, String location, String subcategory, String category, String description) {
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Product(String title, BigDecimal price, String location, String subcategory, String category, String description, String status) {
         this.title = title;
         this.price = price;
         this.location = location;
         this.category = category;
         this.subcategory = subcategory;
         this.description = description;
+        this.status = status;
     }
 
     public Product(String id, String title, BigDecimal price) {
