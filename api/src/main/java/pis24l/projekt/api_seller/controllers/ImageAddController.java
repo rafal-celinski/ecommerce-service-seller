@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import pis24l.projekt.api_seller.service.ImageAddService;
-import pis24l.projekt.api_seller.repositories.ImageRepository;
+import pis24l.projekt.api_seller.repositories.mongo.ImageRepository;
 
 import pis24l.projekt.api_seller.model.Image;
 
