@@ -1,4 +1,4 @@
-package pis24l.projekt.api_seller.model;
+package pis24l.projekt.api_seller.models;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -33,6 +33,8 @@ public class Product {
     @NotNull(message = "Location cannot be null")
     @Size(min = 1, max = 255, message = "Location must be between 1 and 255 characters")
     private String location;
+
+    private String status;
 
 //    @CreatedDate
 //    //@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS")
