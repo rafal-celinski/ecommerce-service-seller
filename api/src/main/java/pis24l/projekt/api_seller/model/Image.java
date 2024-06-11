@@ -1,9 +1,11 @@
 package pis24l.projekt.api_seller.model;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import javax.persistence.*;
 
+@Document(collection = "image")
 @Entity
-@Table(name = "image")
 public class Image {
 
     @Id

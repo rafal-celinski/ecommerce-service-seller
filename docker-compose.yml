@@ -20,5 +20,18 @@ services:
     depends_on:
       - api
 
+  elasticsearch:
+    extends:
+      file: docker-compose-elastic.yml
+      service: elasticsearch
+    environment:
+      - ELASTIC_USERNAME=elastic
+      - ELASTIC_PASSWORD=password
+
 volumes:
   postgres_data:
+  esdata:
+
+networks:
+  esnet:
+    driver: bridge
