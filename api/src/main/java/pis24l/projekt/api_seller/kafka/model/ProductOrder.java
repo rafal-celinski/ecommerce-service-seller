@@ -25,6 +25,14 @@ public class ProductOrder {
         this.quantity = quantity;
     }
 
+    @Override
+    public String toString() {
+        return "ProductOrder{" +
+                "productId='" + productId + '\'' +
+                ", quantity=" + quantity +
+                '}';
+    }
+
     // getters and setters
 }
 
