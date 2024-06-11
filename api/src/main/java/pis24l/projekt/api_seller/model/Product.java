@@ -1,5 +1,6 @@
 package pis24l.projekt.api_seller.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -8,13 +9,14 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.validation.constraints.Size;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-@Document(indexName = "products")
+@Document(indexName = "products") // Elasticsearch index name
 @org.springframework.data.mongodb.core.mapping.Document(collection = "product")
 public class Product {
 
@@ -33,7 +35,8 @@ public class Product {
     @Size(min = 1, max = 255, message = "Location must be between 1 and 255 characters")
     private String location;
 
-    @Field(type = FieldType.Date, format = DateFormat.date)
+
+    // @Field(type = FieldType.Date)
     private LocalDate date;
 
     @NotNull(message = "Category cannot be null")
@@ -42,13 +45,13 @@ public class Product {
     @NotNull(message = "Subcategory cannot be null")
     private String subcategory;
 
+
     private String description;
 
-    private List<String> imageUrls;
 
-    public Product() {
-        this.date = LocalDate.now();
-    }
+    protected Product() {
+        // this.date = LocalDate.now();
+        }
 
     public Product(String title, BigDecimal price, String location, String subcategory, String category, String description) {
         this.title = title;
@@ -57,7 +60,6 @@ public class Product {
         this.category = category;
         this.subcategory = subcategory;
         this.description = description;
-        this.date = LocalDate.now();
     }
 
     public Product(String id, String title, BigDecimal price) {
@@ -65,9 +67,7 @@ public class Product {
         this.title = title;
         this.price = price;
     }
-
-    public Product(String id, String title, BigDecimal price, String location, String subcategory, String category, String description, List<String> imageUrls) {
-        this.id = id;
+    public Product(String title, BigDecimal price, String location, String subcategory, String category, String description, List<String> imageUrls) {
         this.title = title;
         this.price = price;
         this.location = location;
@@ -75,15 +75,16 @@ public class Product {
         this.subcategory = subcategory;
         this.description = description;
         this.imageUrls = imageUrls;
-        this.date = LocalDate.now();
     }
 
-    // Getters and setters
-
+    private List<String> imageUrls;
     public List<String> getImageUrls() {
         return imageUrls;
     }
 
+    public void setImageUrls(List<String> imageUrls) {
+        this.imageUrls = imageUrls;
+    }
     public String getId() {
         return id;
     }
@@ -92,9 +93,7 @@ public class Product {
         return title;
     }
 
-    public String getDescription() {
-        return description;
-    }
+    public String getDescription() { return description; }
 
     public BigDecimal getPrice() {
         return price;
@@ -108,9 +107,11 @@ public class Product {
         return date;
     }
 
+
     public String getCategory() {
         return category;
     }
+
 
     public String getSubcategory() {
         return subcategory;
@@ -146,9 +147,5 @@ public class Product {
 
     public void setDate(LocalDate date) {
         this.date = date;
-    }
-
-    public void setImageUrls(List<String> imageUrls) {
-        this.imageUrls = imageUrls;
     }
 }

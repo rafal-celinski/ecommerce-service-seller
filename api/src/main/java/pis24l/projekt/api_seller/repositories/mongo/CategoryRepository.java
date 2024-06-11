@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import pis24l.projekt.api_seller.model.Category;
 
 @Repository
-public interface CategoryRepository extends MongoRepository<Category, Long> {
+public interface CategoryRepository extends MongoRepository<Category, String> {
 
 }
