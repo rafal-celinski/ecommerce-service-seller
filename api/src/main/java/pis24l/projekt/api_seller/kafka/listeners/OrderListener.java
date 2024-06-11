@@ -5,6 +5,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import pis24l.projekt.api_seller.kafka.model.ProductOrder;
 import pis24l.projekt.api_seller.service.ProductUpdateService;
+import pis24l.projekt.api_seller.service.exceptions.ProductStatusException;
 
 @Service
 public class OrderListener {
@@ -19,11 +20,18 @@ public class OrderListener {
     @KafkaListener(topics = "product_orders", groupId = "group_id")
     public void listen(ProductOrder productOrder) {
         System.out.println("Received product order: " + productOrder);
-        updateProductStatus(productOrder.getProductId());
+        try {
+            updateProductStatus(productOrder.getProductId());
+        } catch (ProductStatusException e) {
+            System.err.println("ProductStatusException: " + e.getMessage());
+
+        } catch (Exception e) {
+            System.err.println("Exception: " + e.getMessage());
+        }
     }
 
     private void updateProductStatus(String productId) {
-        productUpdateService.updateProductStatus(productId, "bought");
+        productUpdateService.updateProductStatus(productId, "Bought");
     }
 }
 
