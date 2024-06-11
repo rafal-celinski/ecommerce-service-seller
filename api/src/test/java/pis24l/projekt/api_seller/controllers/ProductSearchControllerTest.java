@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import pis24l.projekt.api_seller.model.Product;
+import pis24l.projekt.api_seller.models.Product;
 import pis24l.projekt.api_seller.service.ProductSearchService;
 
 import java.math.BigDecimal;

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import pis24l.projekt.api_seller.model.Product;
+import pis24l.projekt.api_seller.models.Product;
 import pis24l.projekt.api_seller.repositories.elastic.ProductAddRepository;
 import pis24l.projekt.api_seller.repositories.mongo.ProductRepository;
 
@@ -38,16 +38,18 @@ public class ProductSearchService {
         if (search != null && !search.isEmpty()) {
             criteriaList.add(Criteria.where("title").regex(search, "i"));
         }
-        if (category != null) {
+        if (category != null && !category.isEmpty()) {
             criteriaList.add(Criteria.where("category").is(category));
         }
-        if (subcategory != null) {
+        if (subcategory != null && !subcategory.isEmpty()) {
             criteriaList.add(Criteria.where("subcategory").is(subcategory));
         }
-        if (minPrice != null) {
+
+        if (minPrice != null && maxPrice != null) {
+            criteriaList.add(Criteria.where("price").gte(minPrice).andOperator(Criteria.where("price").lte(maxPrice)));
+        } else if (minPrice != null) {
             criteriaList.add(Criteria.where("price").gte(minPrice));
-        }
-        if (maxPrice != null) {
+        } else if (maxPrice != null) {
             criteriaList.add(Criteria.where("price").lte(maxPrice));
         }
         if (location != null && !location.isEmpty()) {

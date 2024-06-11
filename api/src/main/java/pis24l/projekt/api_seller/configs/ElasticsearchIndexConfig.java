@@ -1,4 +1,4 @@
-package pis24l.projekt.api_seller.config;
+package pis24l.projekt.api_seller.configs;
 
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -46,7 +46,7 @@ public class ElasticsearchIndexConfig {
                         "title": {"type": "text"},
                         "price": {"type": "float"},
                         "location": {"type": "text"},
-                        "date": {"type": "date", "format": "uuuu-MM-dd HH:mm:ss||uuuu-MM-dd||epoch_millis||strict_date_optional_time||strict_date"},
+                        "date": {"type": "date", "format": "strict_date_optional_time||epoch_millis"},
                         "category": {"type": "text"},
                         "subcategory": {"type": "text"},
                         "description": {"type": "text"},

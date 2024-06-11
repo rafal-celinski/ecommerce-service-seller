@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 import pis24l.projekt.api_seller.repositories.mongo.ImageRepository;
 import pis24l.projekt.api_seller.service.ImageAddService;
 
-import pis24l.projekt.api_seller.model.Image;
+import pis24l.projekt.api_seller.models.Image;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(ImageAddController.class)
