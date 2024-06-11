@@ -1,10 +1,18 @@
 package pis24l.projekt.api_seller.kafka.model;
 
+
 public class ProductOrder {
+
+
     private String productId;
+
     private int quantity;
 
-    public ProductOrder(String productId, int quantity) {
+    public ProductOrder() {
+    }
+
+
+    public ProductOrder(String productId,int quantity) {
         this.productId = productId;
         this.quantity = quantity;
     }
@@ -32,7 +40,4 @@ public class ProductOrder {
                 ", quantity=" + quantity +
                 '}';
     }
-
-    // getters and setters
 }
-
