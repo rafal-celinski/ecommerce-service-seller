@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pis24l.projekt.api_seller.repositories.mongo.ProductRepository;
 import pis24l.projekt.api_seller.model.Product;
-import pis24l.projekt.api_seller.service.exceptions.ProductStatusException;
 
 import java.util.Optional;
 
@@ -16,12 +15,12 @@ public class ProductUpdateService {
         this.productRepository = productRepository;
     }
 
-    public void updateProductStatus(String productId, String status) {
+    public void updateProductStatus(String productId, String status) throws Exception {
         Optional<Product> existingProduct = productRepository.findById(productId);
         if (existingProduct.isPresent()) {
             Product product = existingProduct.get();
             if ("Bought".equals(product.getStatus())) {
-                throw new ProductStatusException("Product with ID " + productId + " has already been bought.");
+                throw new Exception("Product with ID " + productId + " has already been bought.");
             }
             product.setStatus(status);
             productRepository.save(product);

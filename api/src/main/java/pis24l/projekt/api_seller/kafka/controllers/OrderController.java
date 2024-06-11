@@ -32,7 +32,7 @@ public class OrderController {
         }
     }
 
-    private void updateProductStatus(String productId) {
+    private void updateProductStatus(String productId) throws Exception {
         productUpdateService.updateProductStatus(productId, "Bought");
     }
 
