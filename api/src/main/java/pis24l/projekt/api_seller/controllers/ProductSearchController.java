@@ -33,8 +33,8 @@ public class ProductSearchController {
     @GetMapping("/search")
     public ResponseEntity<Page<Product>> searchProducts(
             @RequestParam(required = false) String search,
-            @RequestParam(required = false) Long category,
-            @RequestParam(required = false) Long subcategory,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String subcategory,
             @RequestParam(required = false) BigDecimal minPrice,
             @RequestParam(required = false) BigDecimal maxPrice,
             @RequestParam(required = false) String location,

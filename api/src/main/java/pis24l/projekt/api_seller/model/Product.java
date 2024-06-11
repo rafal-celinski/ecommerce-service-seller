@@ -1,6 +1,7 @@
 package pis24l.projekt.api_seller.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -36,6 +37,8 @@ public class Product {
     private String location;
 
 
+    @CreatedDate
+    //@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS")
     // @Field(type = FieldType.Date)
     private LocalDate date;
 

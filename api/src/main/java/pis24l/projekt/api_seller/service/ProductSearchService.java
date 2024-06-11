@@ -13,6 +13,7 @@ import pis24l.projekt.api_seller.repositories.elastic.ProductAddRepository;
 import pis24l.projekt.api_seller.repositories.mongo.ProductRepository;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,26 +31,31 @@ public class ProductSearchService {
         this.productAddRepository = productAddRepository;
     }
 
-    public Page<Product> searchProducts(String search, Long category, Long subcategory, BigDecimal minPrice, BigDecimal maxPrice, String location, Pageable pageable) {
+    public Page<Product> searchProducts(String search, String category, String subcategory, BigDecimal minPrice, BigDecimal maxPrice, String location, Pageable pageable) {
         Query query = new Query();
+        List<Criteria> criteriaList = new ArrayList<>();
 
         if (search != null && !search.isEmpty()) {
-            query.addCriteria(Criteria.where("title").regex(search, "i"));
+            criteriaList.add(Criteria.where("title").regex(search, "i"));
         }
         if (category != null) {
-            query.addCriteria(Criteria.where("category").is(category));
+            criteriaList.add(Criteria.where("category").is(category));
         }
         if (subcategory != null) {
-            query.addCriteria(Criteria.where("subcategory").is(subcategory));
+            criteriaList.add(Criteria.where("subcategory").is(subcategory));
         }
         if (minPrice != null) {
-            query.addCriteria(Criteria.where("price").gte(minPrice));
+            criteriaList.add(Criteria.where("price").gte(minPrice));
         }
         if (maxPrice != null) {
-            query.addCriteria(Criteria.where("price").lte(maxPrice));
+            criteriaList.add(Criteria.where("price").lte(maxPrice));
         }
         if (location != null && !location.isEmpty()) {
-            query.addCriteria(Criteria.where("location").regex(location, "i"));
+            criteriaList.add(Criteria.where("location").regex(location, "i"));
+        }
+
+        if (!criteriaList.isEmpty()) {
+            query.addCriteria(new Criteria().andOperator(criteriaList.toArray(new Criteria[0])));
         }
 
         query.with(pageable);
@@ -68,5 +74,4 @@ public class ProductSearchService {
     public List<Product> searchProductsFullText(String query) {
         return productAddRepository.findByTitleContainingOrDescriptionContaining(query, query);
     }
-
 }
