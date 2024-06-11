@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import pis24l.projekt.api_seller.model.Product;
-import pis24l.projekt.api_seller.repositories.mongo.ImageRepository;
+import pis24l.projekt.api_seller.repositories.elastic.ProductAddRepository;
 import pis24l.projekt.api_seller.repositories.mongo.ProductRepository;
 
 import java.math.BigDecimal;
@@ -20,14 +20,14 @@ import java.util.Optional;
 public class ProductSearchService {
 
     private final ProductRepository productRepository;
-    private final ImageRepository imageRepository;
     private final MongoTemplate mongoTemplate;
+    private final ProductAddRepository productAddRepository;
 
     @Autowired
-    public ProductSearchService(ProductRepository productRepository, ImageRepository imageRepository, MongoTemplate mongoTemplate) {
+    public ProductSearchService(ProductRepository productRepository, MongoTemplate mongoTemplate, ProductAddRepository productAddRepository) {
         this.productRepository = productRepository;
-        this.imageRepository = imageRepository;
         this.mongoTemplate = mongoTemplate;
+        this.productAddRepository = productAddRepository;
     }
 
     public Page<Product> searchProducts(String search, Long category, Long subcategory, BigDecimal minPrice, BigDecimal maxPrice, String location, Pageable pageable) {
@@ -64,4 +64,9 @@ public class ProductSearchService {
         Optional<Product> productOptional = productRepository.findById(productId);
         return productOptional.orElseThrow(() -> new RuntimeException("Product not found with id " + productId));
     }
+
+    public List<Product> searchProductsFullText(String query) {
+        return productAddRepository.findByTitleContainingOrDescriptionContaining(query, query);
+    }
+
 }

@@ -6,12 +6,10 @@ import org.elasticsearch.client.indices.CreateIndexRequest;
 import org.elasticsearch.client.indices.CreateIndexResponse;
 import org.elasticsearch.client.indices.GetIndexRequest;
 import org.elasticsearch.client.indices.PutMappingRequest;
-import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
 
 @Configuration
 public class ElasticsearchIndexConfig {
@@ -24,16 +22,15 @@ public class ElasticsearchIndexConfig {
     }
 
     @PostConstruct
-    public void createIndexIfNotExists() throws IOException {
+    public void createIndexIfNotExists() throws Exception {
         GetIndexRequest getIndexRequest = new GetIndexRequest("products");
         boolean exists = client.indices().exists(getIndexRequest, RequestOptions.DEFAULT);
         if (!exists) {
             CreateIndexRequest createIndexRequest = new CreateIndexRequest("products");
-            createIndexRequest.settings("""
-                    {
-                      "number_of_shards": 1,
-                      "number_of_replicas": 1
-                    }""", XContentType.JSON);
+            createIndexRequest.settings("{\n" +
+                    "  \"number_of_shards\": 1,\n" +
+                    "  \"number_of_replicas\": 1\n" +
+                    "}", org.elasticsearch.common.xcontent.XContentType.JSON);
 
             CreateIndexResponse createIndexResponse = client.indices().create(createIndexRequest, RequestOptions.DEFAULT);
             if (!createIndexResponse.isAcknowledged()) {
@@ -48,13 +45,13 @@ public class ElasticsearchIndexConfig {
                         "title": {"type": "text"},
                         "price": {"type": "float"},
                         "location": {"type": "text"},
-                        "date": {"type": "date", "format": "uuuu-MM-dd"},
-                        "category": {"type": "keyword"},
-                        "subcategory": {"type": "keyword"},
+                        "date": {"type": "date", "format": "uuuu-MM-dd HH:mm:ss||uuuu-MM-dd||epoch_millis||strict_date_optional_time||strict_date"},
+                        "category": {"type": "integer"},
+                        "subcategory": {"type": "integer"},
                         "description": {"type": "text"},
                         "imageUrls": {"type": "keyword"}
                       }
-                    }""", XContentType.JSON);
+                    }""", org.elasticsearch.common.xcontent.XContentType.JSON);
 
             client.indices().putMapping(putMappingRequest, RequestOptions.DEFAULT);
         }
