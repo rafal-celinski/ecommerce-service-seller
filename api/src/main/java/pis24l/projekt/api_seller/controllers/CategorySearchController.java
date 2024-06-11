@@ -3,8 +3,8 @@ package pis24l.projekt.api_seller.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pis24l.projekt.api_seller.model.Category;
-import pis24l.projekt.api_seller.model.Subcategory;
+import pis24l.projekt.api_seller.models.Category;
+import pis24l.projekt.api_seller.models.Subcategory;
 import pis24l.projekt.api_seller.service.CategorySearchService;
 
 import java.util.List;

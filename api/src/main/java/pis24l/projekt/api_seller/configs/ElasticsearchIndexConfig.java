@@ -1,4 +1,4 @@
-package pis24l.projekt.api_seller.config;
+package pis24l.projekt.api_seller.configs;
 
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -27,10 +27,11 @@ public class ElasticsearchIndexConfig {
         boolean exists = client.indices().exists(getIndexRequest, RequestOptions.DEFAULT);
         if (!exists) {
             CreateIndexRequest createIndexRequest = new CreateIndexRequest("products");
-            createIndexRequest.settings("{\n" +
-                    "  \"number_of_shards\": 1,\n" +
-                    "  \"number_of_replicas\": 1\n" +
-                    "}", org.elasticsearch.common.xcontent.XContentType.JSON);
+            createIndexRequest.settings("""
+                    {
+                      "number_of_shards": 1,
+                      "number_of_replicas": 1
+                    }""", org.elasticsearch.common.xcontent.XContentType.JSON);
 
             CreateIndexResponse createIndexResponse = client.indices().create(createIndexRequest, RequestOptions.DEFAULT);
             if (!createIndexResponse.isAcknowledged()) {
@@ -44,10 +45,37 @@ public class ElasticsearchIndexConfig {
                         "id": {"type": "keyword"},
                         "title": {"type": "text"},
                         "price": {"type": "float"},
-                        "location": {"type": "text"},
-                        "date": {"type": "date", "format": "uuuu-MM-dd HH:mm:ss||uuuu-MM-dd||epoch_millis||strict_date_optional_time||strict_date"},
-                        "category": {"type": "integer"},
-                        "subcategory": {"type": "integer"},
+                        "location": {
+                          "type": "text",
+                          "fields": {
+                            "keyword": {
+                              "type": "keyword",
+                              "ignore_above": 256
+                            }
+                          }
+                        },
+                        "date": {
+                          "type": "date",
+                          "format": "uuuu-MM-dd HH:mm:ss||uuuu-MM-dd||epoch_millis||strict_date_optional_time||strict_date"
+                        },
+                        "category": {
+                          "type": "text",
+                          "fields": {
+                            "keyword": {
+                              "type": "keyword",
+                              "ignore_above": 256
+                            }
+                          }
+                        },
+                        "subcategory": {
+                          "type": "text",
+                          "fields": {
+                            "keyword": {
+                              "type": "keyword",
+                              "ignore_above": 256
+                            }
+                          }
+                        },
                         "description": {"type": "text"},
                         "imageUrls": {"type": "keyword"}
                       }

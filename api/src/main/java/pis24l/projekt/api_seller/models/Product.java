@@ -1,6 +1,6 @@
 package pis24l.projekt.api_seller.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -8,7 +8,6 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -35,13 +34,10 @@ public class Product {
     @Size(min = 1, max = 255, message = "Location must be between 1 and 255 characters")
     private String location;
 
-    @NotNull(message = "Status cannot be null")
-    @Size(min = 1, max = 20, message = "Status must be between 1 and 20 characters")
-    private String status;
-
-
-    // @Field(type = FieldType.Date)
-    private LocalDate date;
+//    @CreatedDate
+//    //@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS")
+//    @Field(type = FieldType.Date, format = DateFormat.date_optional_time)
+//    private LocalDateTime date;
 
     @NotNull(message = "Category cannot be null")
     private String category;
@@ -49,9 +45,7 @@ public class Product {
     @NotNull(message = "Subcategory cannot be null")
     private String subcategory;
 
-
     private String description;
-
 
     protected Product() {
         // this.date = LocalDate.now();
@@ -116,9 +110,9 @@ public class Product {
         return location;
     }
 
-    public LocalDate getDate() {
-        return date;
-    }
+//    public LocalDateTime getDate() {
+//        return date;
+//    }
 
 
     public String getCategory() {
@@ -158,7 +152,7 @@ public class Product {
         this.subcategory = subcategory;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
+//    public void setDate(LocalDateTime date) {
+//        this.date = date;
+//    }
 }

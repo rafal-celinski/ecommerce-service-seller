@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import pis24l.projekt.api_seller.model.Product;
+import pis24l.projekt.api_seller.models.Product;
 import pis24l.projekt.api_seller.repositories.mongo.ProductRepository;
 import pis24l.projekt.api_seller.repositories.elastic.ProductAddRepository;
 
@@ -30,8 +30,9 @@ public class ProductAddController {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getAllErrors());
         }
-        Product savedProduct = productRepository.save(product);
-        productAddRepository.save(savedProduct); // Save to Elasticsearch
+        Product savedProduct = productAddRepository.save(product);
+        productRepository.save(savedProduct);
+
         return ResponseEntity.ok(savedProduct);
     }
 }

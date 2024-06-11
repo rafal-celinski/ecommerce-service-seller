@@ -1,4 +1,4 @@
-package pis24l.projekt.api_seller.model;
+package pis24l.projekt.api_seller.models;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 

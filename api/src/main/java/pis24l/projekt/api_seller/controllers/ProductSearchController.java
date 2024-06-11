@@ -5,8 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pis24l.projekt.api_seller.model.Product;
-import pis24l.projekt.api_seller.model.ProductSearchRequest;
+import pis24l.projekt.api_seller.models.Product;
+import pis24l.projekt.api_seller.models.ProductSearchRequest;
 import pis24l.projekt.api_seller.service.ProductSearchService;
 
 import java.math.BigDecimal;

@@ -1,4 +1,4 @@
-package pis24l.projekt.api_seller.model;
+package pis24l.projekt.api_seller.models;
 
 public class ProductSearchRequest {
     private String query;
