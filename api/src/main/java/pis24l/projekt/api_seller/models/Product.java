@@ -2,7 +2,10 @@ package pis24l.projekt.api_seller.models;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -34,6 +37,7 @@ import javax.validation.constraints.NotNull;
         private ProductStatus status;
 
         @CreatedDate
+        @Field(type = FieldType.Date, format = DateFormat.date_hour_minute_second_millis)
         private LocalDateTime date;
 
         @NotNull(message = "Category cannot be null")
@@ -44,7 +48,7 @@ import javax.validation.constraints.NotNull;
 
         private String description;
 
-        protected Product() { this.status = ProductStatus.UP;}
+        protected Product() { this.status = ProductStatus.UP; this.date = LocalDateTime.now(); }
 
         public Product(String title, BigDecimal price, String location, String subcategory, String category, String description, ProductStatus status) {
             this.title = title;
