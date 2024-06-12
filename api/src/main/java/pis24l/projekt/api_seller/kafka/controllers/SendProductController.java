@@ -28,6 +28,7 @@ public class SendProductController {
         this.productRepository = productRepository;
         this.kafkaTemplate = kafkaTemplate;
     }
+
     @PutMapping
     public ResponseEntity<?> updateStatusToSent(@PathVariable String id) {
         Optional<Product> productOptional = productRepository.findById(id);
@@ -44,4 +45,5 @@ public class SendProductController {
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Product status is not SOLD, cannot update to SENT");
         }
+    }
 }
