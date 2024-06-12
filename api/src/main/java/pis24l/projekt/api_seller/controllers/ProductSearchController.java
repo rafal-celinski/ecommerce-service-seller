@@ -10,7 +10,7 @@ import pis24l.projekt.api_seller.services.ProductSearchService;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:5000")
+
 @RestController
 @RequestMapping("/products")
 public class ProductSearchController {

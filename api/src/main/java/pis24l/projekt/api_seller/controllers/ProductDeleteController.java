@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pis24l.projekt.api_seller.services.ProductDeleteService;
 
-@CrossOrigin(origins = "http://localhost:5000")
+
 @RestController
 @RequestMapping("/products")
 public class ProductDeleteController {
