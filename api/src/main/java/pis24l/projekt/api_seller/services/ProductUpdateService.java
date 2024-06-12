@@ -26,7 +26,7 @@ public class ProductUpdateService {
             product.setStatus(status);
             productRepository.save(product);
         } else {
-            System.out.println("Product with ID " + productId + " not found");
+            throw new Exception("Product with ID " + productId + "not found");
         }
     }
 }
