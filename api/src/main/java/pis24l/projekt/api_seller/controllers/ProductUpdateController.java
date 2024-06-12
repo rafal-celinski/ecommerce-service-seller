@@ -52,23 +52,4 @@ public class ProductUpdateController {
 
         return ResponseEntity.ok(updatedProduct);
     }
-
-    @PutMapping("/send/{id}")
-    public ResponseEntity<?> updateStatusToSent(@PathVariable String id) {
-
-        Optional<Product> productOptional = productRepository.findById(id);
-        if (!productOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
-        }
-
-        Product product = productOptional.get();
-        if (product.getStatus() == ProductStatus.SOLD) {
-            product.setStatus(ProductStatus.SENT);
-            productRepository.save(product);
-
-            return ResponseEntity.status(HttpStatus.OK).body("Product status updated to SENT");
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Product status is not SOLD, cannot update to SENT");
-        }
-    }
 }
