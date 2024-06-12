@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pis24l.projekt.api_seller.models.Product;
+import pis24l.projekt.api_seller.models.ProductStatus;
 import pis24l.projekt.api_seller.services.ProductSearchService;
 
 import java.util.List;
@@ -34,8 +35,9 @@ public class ProductSearchController {
             @RequestParam(required = false) String category,
             @RequestParam(required = false) String subcategory,
             @RequestParam(required = false) String location,
+            @RequestParam(required = false) ProductStatus status,
             Pageable pageable) {
-        Page<Product> products = productSearchService.searchProducts(search, category, subcategory, location, pageable);
+        Page<Product> products = productSearchService.searchProducts(search, category, subcategory, location, status, pageable);
         return ResponseEntity.ok(products);
     }
 
@@ -50,5 +52,5 @@ public class ProductSearchController {
         Page<Product> products = productSearchService.listProductsInProgress(pageable);
         return ResponseEntity.ok(products);
     }
-    
+
 }

@@ -29,7 +29,7 @@ public class ProductSearchService {
         this.mongoTemplate = mongoTemplate;
     }
 
-    public Page<Product> searchProducts(String search, String category, String subcategory, String location, Pageable pageable) {
+    public Page<Product> searchProducts(String search, String category, String subcategory, String location, ProductStatus status, Pageable pageable) {
         Query query = new Query();
         List<Criteria> criteriaList = new ArrayList<>();
 
@@ -49,6 +49,9 @@ public class ProductSearchService {
 
         if (!criteriaList.isEmpty()) {
             query.addCriteria(new Criteria().andOperator(criteriaList.toArray(new Criteria[0])));
+        }
+        if (status != null) {
+            query.addCriteria(Criteria.where("status").is(status));
         }
 
         query.with(pageable);
