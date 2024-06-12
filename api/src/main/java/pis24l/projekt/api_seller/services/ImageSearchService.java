@@ -1,4 +1,4 @@
-package pis24l.projekt.api_seller.service;
+package pis24l.projekt.api_seller.services;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

@@ -11,6 +11,7 @@ import pis24l.projekt.api_seller.repositories.mongo.ProductRepository;
 import pis24l.projekt.api_seller.repositories.elastic.ProductAddRepository;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/products")
@@ -31,6 +32,7 @@ public class ProductAddController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getAllErrors());
         }
         Product savedProduct = productAddRepository.save(product);
+        savedProduct.setDate(LocalDateTime.now());
         productRepository.save(savedProduct);
 
         return ResponseEntity.ok(savedProduct);

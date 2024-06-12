@@ -6,10 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pis24l.projekt.api_seller.models.Product;
-import pis24l.projekt.api_seller.models.ProductSearchRequest;
-import pis24l.projekt.api_seller.service.ProductSearchService;
+import pis24l.projekt.api_seller.services.ProductSearchService;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:5000")
@@ -35,17 +33,22 @@ public class ProductSearchController {
             @RequestParam(required = false) String search,
             @RequestParam(required = false) String category,
             @RequestParam(required = false) String subcategory,
-            @RequestParam(required = false) BigDecimal minPrice,
-            @RequestParam(required = false) BigDecimal maxPrice,
             @RequestParam(required = false) String location,
             Pageable pageable) {
-        Page<Product> products = productSearchService.searchProducts(search, category, subcategory, minPrice, maxPrice, location, pageable);
+        Page<Product> products = productSearchService.searchProducts(search, category, subcategory, location, pageable);
         return ResponseEntity.ok(products);
     }
 
-    @PostMapping("/search/full-text")
-    public ResponseEntity<List<Product>> searchProducts(@RequestBody ProductSearchRequest searchRequest) {
-        List<Product> products = productSearchService.searchProductsFullText(searchRequest.getQuery());
+    @GetMapping("/all")
+    public ResponseEntity<Page<Product>> listAllProducts(Pageable pageable) {
+        Page<Product> products = productSearchService.listAllProducts(pageable);
         return ResponseEntity.ok(products);
     }
+
+    @GetMapping("/in-progress")
+    public ResponseEntity<Page<Product>> listProductsInProgress(Pageable pageable) {
+        Page<Product> products = productSearchService.listProductsInProgress(pageable);
+        return ResponseEntity.ok(products);
+    }
+    
 }

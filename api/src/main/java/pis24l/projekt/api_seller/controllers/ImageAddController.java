@@ -6,11 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import pis24l.projekt.api_seller.service.ImageAddService;
-import pis24l.projekt.api_seller.repositories.mongo.ImageRepository;
-
+import pis24l.projekt.api_seller.services.ImageAddService;
 import pis24l.projekt.api_seller.models.Image;
-
 import java.io.IOException;
 
 @CrossOrigin(origins = "http://localhost:5000")
@@ -20,11 +17,9 @@ public class ImageAddController {
 
     private final ImageAddService imageAddService;
 
-    private final ImageRepository imageRepository;
 
     @Autowired
-    public ImageAddController(ImageRepository imageRepository, ImageAddService imageAddService) {
-        this.imageRepository = imageRepository;
+    public ImageAddController(ImageAddService imageAddService) {
         this.imageAddService = imageAddService;
     }
 
@@ -35,16 +30,12 @@ public class ImageAddController {
         }
         try {
             Image image = new Image(productId);
-            Image savedImage = imageRepository.save(image);
-
             imageAddService.uploadImage(file, image.getId());
-            return ResponseEntity.ok(savedImage);
+            return (ResponseEntity<?>) ResponseEntity.status(HttpStatus.OK);
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload the file: " + e.getMessage());
         } catch (Exception e) {
-            // Catch any other exceptions that might not have been anticipated
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred: " + e.getMessage());
         }
     }
 }
-

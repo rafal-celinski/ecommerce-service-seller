@@ -6,19 +6,23 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import pis24l.projekt.api_seller.kafka.model.OrderResponse;
 import pis24l.projekt.api_seller.kafka.model.ProductOrder;
-import pis24l.projekt.api_seller.service.ProductUpdateService;
+import pis24l.projekt.api_seller.models.ProductStatus;
+import pis24l.projekt.api_seller.services.ProductUpdateService;
+import pis24l.projekt.api_seller.services.ProductDeleteService;
 
 @Service
 public class OrderController {
 
     private final ProductUpdateService productUpdateService;
     private final KafkaTemplate<String, OrderResponse> kafkaTemplate;
+    private final ProductDeleteService productDeleteService;
 
     @Autowired
-    public OrderController(ProductUpdateService productUpdateService, KafkaTemplate<String, OrderResponse> kafkaTemplate) {
+    public OrderController(ProductUpdateService productUpdateService, KafkaTemplate<String, OrderResponse> kafkaTemplate, ProductDeleteService productDeleteService) {
         this.productUpdateService = productUpdateService;
         this.kafkaTemplate = kafkaTemplate;
 
+        this.productDeleteService = productDeleteService;
     }
 
     @KafkaListener(topics = "product_orders", groupId = "group_id")
@@ -33,7 +37,8 @@ public class OrderController {
     }
 
     private void updateProductStatus(String productId) throws Exception {
-        productUpdateService.updateProductStatus(productId, "Bought");
+        productUpdateService.updateProductStatus(productId, ProductStatus.SOLD);
+        productDeleteService.deleteProductFromElastic(productId);
     }
 
     private void sendOrderResponse(String productId, String status, String message) {

@@ -6,6 +6,5 @@ import pis24l.projekt.api_seller.models.Product;
 import java.util.List;
 
 @Repository
-public interface ProductAddRepository extends ElasticsearchRepository<Product, Long> {
-    List<Product> findByTitleContainingOrDescriptionContaining(String title, String description);
+public interface ProductAddRepository extends ElasticsearchRepository<Product, String> {
 }

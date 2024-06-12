@@ -1,4 +1,4 @@
-package pis24l.projekt.api_seller.service;
+package pis24l.projekt.api_seller.services;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
