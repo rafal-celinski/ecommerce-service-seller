@@ -1,0 +1,106 @@
+.Orders {
+    margin: 60px auto;
+    flex-direction: column;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border: 1px solid #d3d3d3;
+    border-radius: 5px;
+    display: flex;
+    width: 70%;
+}
+
+.Orders .OrdersHeader {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.Orders .Products {
+    margin-top: 10px ;
+    display: flex;
+    flex-direction: column;
+}
+
+.Orders .Products .Product {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border: 1px solid #d3d3d3;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    height: 100px;
+    margin-top: 10px;
+}
+
+.Orders .Products .Product .ProductImage {
+    width: 10%;
+    height: 100%;
+    margin-right: 10px;
+    border: 1px solid #d3d3d3;
+    border-radius: 5px;
+    overflow: hidden;
+    align-items: center;
+    background-color: #ffffff;
+}
+
+.Orders .Products .Product .ProductImage img {;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.Orders .Products .Product .ProductInfo {
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    align-items: center;
+}
+
+.Orders .Products .Product .ProductInfo .ProductTitle {
+    font-size: 16px;
+    font-weight: bold;
+    width: 50%;
+}
+
+.Orders .Products .Product .ProductInfo .ProductQuantity {
+    width: 10%;
+
+}
+.Orders .Products .Product .ProductInfo .ProductDateAndState {
+    width: 25%;
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+}
+.Orders .Products .Product .ProductInfo .ProductDateAndState .ProductState {
+    font-weight: bold;
+}
+
+.Orders .Products .Product .ProductInfo .ChangeState{
+    width: 15%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding-inline: 30px;
+}
+
+.Orders .Products .Product .ProductInfo .ChangeState button{
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+}
+.Orders .Products .Product .ProductInfo .ChangeState button:hover{
+    background-color: #0056b3;
+}
+
+
+.Orders .Products .Product .ProductInfo .ProductTotalPrice {
+    width: 10%;
+    margin-left: 10px;
+    padding-inline: 5px;
+    font-weight: bold;
+}
