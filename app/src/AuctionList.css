@@ -5,6 +5,11 @@
     width: 70%;
 }
 
+.AuctionList .AuctionListHeader {
+    font-weight: bold;
+    font-size: 20px;
+}
+
 .AuctionList .Auctions {
     display: flex;
     flex-direction: column;
