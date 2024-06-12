@@ -5,7 +5,6 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import pis24l.projekt.api_seller.kafka.model.OrderResponse;
-import pis24l.projekt.api_seller.kafka.model.ProductOrder;
 import pis24l.projekt.api_seller.models.ProductStatus;
 import pis24l.projekt.api_seller.services.ProductUpdateService;
 import pis24l.projekt.api_seller.services.ProductDeleteService;
@@ -26,13 +25,13 @@ public class OrderController {
     }
 
     @KafkaListener(topics = "product_orders", groupId = "group_id")
-    public void listen(ProductOrder productOrder) {
-        System.out.println("Received product order: " + productOrder);
+    public void listen(String id) {
+        System.out.println("Received product order: " + id);
         try {
-            updateProductStatus(productOrder.getProductId());
-            sendOrderResponse(productOrder.getProductId(), "SUCCESS", "Order processed successfully.");
+            updateProductStatus(id);
+            sendOrderResponse(id, "SUCCESS", "Order processed successfully.");
         } catch (Exception e) {
-            sendOrderResponse(productOrder.getProductId(), "ERROR", "Order processing failed: " + e.getMessage());
+            sendOrderResponse(id, "ERROR", "Order processing failed: " + e.getMessage());
         }
     }
 
