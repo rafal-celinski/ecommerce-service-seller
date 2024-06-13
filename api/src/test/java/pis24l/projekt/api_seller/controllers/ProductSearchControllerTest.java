@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import pis24l.projekt.api_seller.model.Product;
+import pis24l.projekt.api_seller.models.Product;
 import pis24l.projekt.api_seller.service.ProductSearchService;
 
 import java.math.BigDecimal;
@@ -54,16 +54,17 @@ public class ProductSearchControllerTest {
         BigDecimal minPrice = BigDecimal.valueOf(0);
         BigDecimal maxPrice = BigDecimal.valueOf(100);
         String search = "searchTerm";
-        Long category = 1L;
-        Long subcategory = 2L;
+        String category = "dg";
+        String subcategory = "asjnf";
         String location = "location";
         Pageable pageable = PageRequest.of(0, 10);
 
         List<Product> productList = new ArrayList<>();
-        Product product = new Product("xd", BigDecimal.valueOf(20), "Warszawa", 0L, 0L, "xd");        productList.add(product);
+        Product product = new Product("xd", BigDecimal.valueOf(20), "Warszawa", "asf", "dsg", "xd");
+        productList.add(product);
         long total = 1;
 
-        when(productSearchService.searchProducts(anyString(), anyLong(), anyLong(), any(BigDecimal.class), any(BigDecimal.class), anyString(), eq(pageable)))
+        when(productSearchService.searchProducts(anyString(), anyString(), anyString(), any(BigDecimal.class), any(BigDecimal.class), anyString(), eq(pageable)))
                 .thenReturn(new PageImpl<>(productList, pageable, total));
 
         // When
@@ -77,11 +78,11 @@ public class ProductSearchControllerTest {
     @Test
     public void testGetProductById() throws Exception {
         // Mocking a product object
-        Product mockProduct = new Product(1L, "Mock Product", BigDecimal.valueOf(10.99));
+        Product mockProduct = new Product("XDXD", "Mock Product", BigDecimal.valueOf(10.99));
 
 
         // Mocking the behavior of the ProductService to return the mockProduct when getProductById is called with ID 1
-        when(productSearchService.getProductById(1L)).thenReturn(mockProduct);
+        when(productSearchService.getProductById("XDXD")).thenReturn(mockProduct);
 
         // Perform GET request to /products/{id} endpoint
         mockMvc.perform(MockMvcRequestBuilders.get("/products/{id}", 1L))
