@@ -43,7 +43,7 @@ public class ImageAddController {
 
             Product newProduct = product.get();
             List<String> ImageUrls = newProduct.getImageUrls();
-            ImageUrls.addLast(imageUrl);
+            ImageUrls.add(imageUrl);
             newProduct.setImageUrls(ImageUrls);
             System.out.println(ImageUrls);
             productRepository.save(newProduct);
