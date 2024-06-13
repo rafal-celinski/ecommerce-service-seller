@@ -7,20 +7,22 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import pis24l.projekt.api_seller.services.ImageAddService;
+import pis24l.projekt.api_seller.services.ProductUpdateService;
 import pis24l.projekt.api_seller.models.Image;
-import java.io.IOException;
 
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/images")
 public class ImageAddController {
 
     private final ImageAddService imageAddService;
-
+    private final ProductUpdateService productUpdateService;
 
     @Autowired
-    public ImageAddController(ImageAddService imageAddService) {
+    public ImageAddController(ImageAddService imageAddService, ProductUpdateService productUpdateService) {
         this.imageAddService = imageAddService;
+        this.productUpdateService = productUpdateService;
     }
 
     @PostMapping("/add")
@@ -30,8 +32,10 @@ public class ImageAddController {
         }
         try {
             Image image = new Image(productId);
-            imageAddService.uploadImage(file, image.getId());
-            return (ResponseEntity<?>) ResponseEntity.status(HttpStatus.OK);
+            String imageUrl = imageAddService.uploadImageToNginx(file, image.getId());
+
+            productUpdateService.addImageUrlToProduct(productId, imageUrl);
+            return ResponseEntity.status(HttpStatus.OK).body("Image uploaded successfully.");
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload the file: " + e.getMessage());
         } catch (Exception e) {
