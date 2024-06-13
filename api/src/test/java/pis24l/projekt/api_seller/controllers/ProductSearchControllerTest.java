@@ -57,11 +57,11 @@ public class ProductSearchControllerTest {
         productList.add(product);
         long total = 1;
 
-        when(productSearchService.searchProducts(anyString(), anyString(), anyString(), anyString(), eq(pageable)))
+        when(productSearchService.searchProducts(anyString(), anyString(), anyString(), anyString(), eq(ProductStatus.UP), eq(pageable)))
                 .thenReturn(new PageImpl<>(productList, pageable, total));
 
         // When
-        ResponseEntity<Page<Product>> response = productSearchController.searchProducts(search, category, subcategory, location, pageable);
+        ResponseEntity<Page<Product>> response = productSearchController.searchProducts(search, category, subcategory, location, ProductStatus.UP, pageable);
 
         // Then
         assertEquals(HttpStatus.OK, response.getStatusCode());

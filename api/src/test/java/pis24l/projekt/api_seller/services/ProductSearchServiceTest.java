@@ -64,7 +64,7 @@ public class ProductSearchServiceTest {
         setupMockQuery(productList, total);
 
         // When
-        Page<Product> resultWithAllParams = productSearchService.searchProducts(search, category, subcategory, location, pageable);
+        Page<Product> resultWithAllParams = productSearchService.searchProducts(search, category, subcategory, location,ProductStatus.UP, pageable);
 
         // Then
         assertEquals(1, resultWithAllParams.getTotalElements());
