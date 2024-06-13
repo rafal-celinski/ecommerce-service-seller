@@ -7,7 +7,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pis24l.projekt.api_seller.kafka.controllers.OrderController;
 import pis24l.projekt.api_seller.models.Product;
-import pis24l.projekt.api_seller.models.ProductStatus;
 import pis24l.projekt.api_seller.repositories.mongo.ProductRepository;
 
 import javax.validation.Valid;
@@ -19,13 +18,11 @@ import java.util.Optional;
 public class ProductUpdateController {
 
     private final ProductRepository productRepository;
-    private final OrderController orderController;
 
 
     @Autowired
     public ProductUpdateController(ProductRepository productRepository, OrderController orderController) {
         this.productRepository = productRepository;
-        this.orderController = orderController;
     }
 
     @PutMapping("/update/{id}")
