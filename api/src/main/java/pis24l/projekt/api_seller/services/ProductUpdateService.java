@@ -11,6 +11,7 @@ import java.util.Optional;
 @Service
 public class ProductUpdateService {
     private final ProductRepository productRepository;
+
     @Autowired
     public ProductUpdateService(ProductRepository productRepository) {
         this.productRepository = productRepository;
@@ -26,7 +27,18 @@ public class ProductUpdateService {
             product.setStatus(status);
             productRepository.save(product);
         } else {
-            throw new Exception("Product with ID " + productId + "not found");
+            throw new Exception("Product with ID " + productId + " not found");
+        }
+    }
+
+    public void addImageUrlToProduct(String productId, String imageUrl) throws Exception {
+        Optional<Product> existingProduct = productRepository.findById(productId);
+        if (existingProduct.isPresent()) {
+            Product product = existingProduct.get();
+            product.getImageUrls().add(imageUrl);
+            productRepository.save(product);
+        } else {
+            throw new Exception("Product with ID " + productId + " not found");
         }
     }
 }
