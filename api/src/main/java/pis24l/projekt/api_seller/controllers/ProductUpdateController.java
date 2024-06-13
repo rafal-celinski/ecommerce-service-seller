@@ -19,13 +19,11 @@ import java.util.Optional;
 public class ProductUpdateController {
 
     private final ProductRepository productRepository;
-    private final OrderController orderController;
 
 
     @Autowired
-    public ProductUpdateController(ProductRepository productRepository, OrderController orderController) {
+    public ProductUpdateController(ProductRepository productRepository) {
         this.productRepository = productRepository;
-        this.orderController = orderController;
     }
 
     @PutMapping("/update/{id}")

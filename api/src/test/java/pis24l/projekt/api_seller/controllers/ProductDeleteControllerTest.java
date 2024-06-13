@@ -2,9 +2,13 @@ package pis24l.projekt.api_seller.controllers;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -25,6 +29,19 @@ public class ProductDeleteControllerTest {
 
     @MockBean
     private ProductRepository productRepository;
+
+    @Configuration
+    static class TestConfig {
+        @Bean
+        public MongoTemplate mongoTemplate() {
+            return Mockito.mock(MongoTemplate.class);
+        }
+
+        @Bean
+        public ProductDeleteController productDeleteController(ProductRepository productRepository) {
+            return new ProductDeleteController(productRepository);
+        }
+    }
 
     @Test
     public void deleteProduct_WhenProductExists_ShouldReturnNoContent() throws Exception {

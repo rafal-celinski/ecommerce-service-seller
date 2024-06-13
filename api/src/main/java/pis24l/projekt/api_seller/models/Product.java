@@ -72,7 +72,28 @@ import javax.validation.constraints.NotNull;
             this.imageUrls = imageUrls;
         }
 
-        private List<String> imageUrls;
+    public Product(String id, String title, BigDecimal price, String location, String category, String subcategory, String description) {
+        this.id = id;
+        this.title = title;
+        this.price = price;
+        this.location = location;
+        this.category = category;
+        this.subcategory = subcategory;
+        this.description = description;
+    }
+
+    public Product(String id, String title, BigDecimal price, String location, String category, String subcategory, String description, ProductStatus status) {
+        this.id = id;
+        this.title = title;
+        this.price = price;
+        this.location = location;
+        this.category = category;
+        this.subcategory = subcategory;
+        this.description = description;
+        this.status = status;
+    }
+
+    private List<String> imageUrls;
 
         public List<String> getImageUrls() {
             return imageUrls;
