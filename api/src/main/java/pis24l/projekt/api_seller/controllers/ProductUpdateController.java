@@ -21,7 +21,7 @@ public class ProductUpdateController {
 
 
     @Autowired
-    public ProductUpdateController(ProductRepository productRepository, OrderController orderController) {
+    public ProductUpdateController(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 

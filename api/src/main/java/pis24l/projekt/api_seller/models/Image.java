@@ -5,11 +5,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.persistence.*;
 
 @Document(collection = "image")
+@Entity
 public class Image {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
 
+    @Column(name = "product_id")
     private String productId;
 
     public String getId() {

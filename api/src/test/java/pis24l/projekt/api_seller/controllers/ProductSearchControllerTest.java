@@ -12,27 +12,22 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import pis24l.projekt.api_seller.models.Product;
-import pis24l.projekt.api_seller.service.ProductSearchService;
+import pis24l.projekt.api_seller.models.ProductStatus;
+import pis24l.projekt.api_seller.services.ProductSearchService;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 public class ProductSearchControllerTest {
 
     private MockMvc mockMvc;
-
 
     @Mock
     private ProductSearchService productSearchService;
@@ -46,8 +41,6 @@ public class ProductSearchControllerTest {
         this.mockMvc = MockMvcBuilders.standaloneSetup(productSearchController).build();
     }
 
-
-
     @Test
     public void testSearchProducts_withAllParameters() {
         // Given
@@ -60,36 +53,77 @@ public class ProductSearchControllerTest {
         Pageable pageable = PageRequest.of(0, 10);
 
         List<Product> productList = new ArrayList<>();
-        Product product = new Product("xd", BigDecimal.valueOf(20), "Warszawa", "asf", "dsg", "xd");
+        Product product = new Product("1", "Product 1", BigDecimal.valueOf(20), "Warsaw", category, subcategory, "description", ProductStatus.UP);
         productList.add(product);
         long total = 1;
 
-        when(productSearchService.searchProducts(anyString(), anyString(), anyString(), any(BigDecimal.class), any(BigDecimal.class), anyString(), eq(pageable)))
+        when(productSearchService.searchProducts(anyString(), anyString(), anyString(), anyString(), eq(pageable)))
                 .thenReturn(new PageImpl<>(productList, pageable, total));
 
         // When
-        ResponseEntity<Page<Product>> response = productSearchController.searchProducts(search, category, subcategory, minPrice, maxPrice, location, pageable);
+        ResponseEntity<Page<Product>> response = productSearchController.searchProducts(search, category, subcategory, location, pageable);
 
         // Then
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(1, response.getBody().getTotalElements());
         assertEquals(1, response.getBody().getContent().size());
     }
+
     @Test
     public void testGetProductById() throws Exception {
-        // Mocking a product object
-        Product mockProduct = new Product("XDXD", "Mock Product", BigDecimal.valueOf(10.99));
+        // Given
+        String productId = "1";
+        Product product = new Product(productId, "Mock Product", BigDecimal.valueOf(10.99));
 
+        when(productSearchService.getProductById(productId)).thenReturn(product);
 
-        // Mocking the behavior of the ProductService to return the mockProduct when getProductById is called with ID 1
-        when(productSearchService.getProductById("XDXD")).thenReturn(mockProduct);
+        // When
+        ResponseEntity<Product> response = productSearchController.getProductById(productId);
 
-        // Perform GET request to /products/{id} endpoint
-        mockMvc.perform(MockMvcRequestBuilders.get("/products/{id}", 1L))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Mock Product"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(10.99));
+        // Then
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(productId, response.getBody().getId());
+        assertEquals("Mock Product", response.getBody().getTitle());
+        assertEquals(BigDecimal.valueOf(10.99), response.getBody().getPrice());
     }
 
+    @Test
+    public void testListAllProducts() {
+        // Given
+        Pageable pageable = PageRequest.of(0, 10);
+        List<Product> productList = new ArrayList<>();
+        Product product = new Product("1", "Product 1", BigDecimal.valueOf(20), "Warsaw", "category", "subcategory", "description", ProductStatus.UP);
+        productList.add(product);
+        Page<Product> productPage = new PageImpl<>(productList, pageable, productList.size());
+
+        when(productSearchService.listAllProducts(pageable)).thenReturn(productPage);
+
+        // When
+        ResponseEntity<Page<Product>> response = productSearchController.listAllProducts(pageable);
+
+        // Then
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(1, response.getBody().getTotalElements());
+        assertEquals("Product 1", response.getBody().getContent().get(0).getTitle());
+    }
+
+    @Test
+    public void testListProductsInProgress() {
+        // Given
+        Pageable pageable = PageRequest.of(0, 10);
+        List<Product> productList = new ArrayList<>();
+        Product product = new Product("1", "Product 1", BigDecimal.valueOf(20), "Warsaw", "category", "subcategory", "description", ProductStatus.UP);
+        productList.add(product);
+        Page<Product> productPage = new PageImpl<>(productList, pageable, productList.size());
+
+        when(productSearchService.listProductsInProgress(pageable)).thenReturn(productPage);
+
+        // When
+        ResponseEntity<Page<Product>> response = productSearchController.listProductsInProgress(pageable);
+
+        // Then
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(1, response.getBody().getTotalElements());
+        assertEquals("Product 1", response.getBody().getContent().get(0).getTitle());
+    }
 }
