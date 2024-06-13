@@ -5,10 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import pis24l.projekt.api_seller.services.ImageAddService;
-import pis24l.projekt.api_seller.services.ProductUpdateService;
-import pis24l.projekt.api_seller.models.Image;
+import pis24l.projekt.api_seller.repositories.mongo.ProductRepository;
+import pis24l.projekt.api_seller.models.Product;
 
 import java.io.IOException;
 
@@ -17,12 +16,12 @@ import java.io.IOException;
 public class ImageAddController {
 
     private final ImageAddService imageAddService;
-    private final ProductUpdateService productUpdateService;
+    private final ProductRepository productRepository;
 
     @Autowired
-    public ImageAddController(ImageAddService imageAddService, ProductUpdateService productUpdateService) {
+    public ImageAddController(ImageAddService imageAddService, ProductRepository productRepository) {
         this.imageAddService = imageAddService;
-        this.productUpdateService = productUpdateService;
+        this.productRepository = productRepository;
     }
 
     @PostMapping("/add")
@@ -31,14 +30,24 @@ public class ImageAddController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid file type.");
         }
         try {
-            Image image = new Image(productId);
-            String imageUrl = imageAddService.uploadImageToNginx(file, image.getId());
+            // Upload image to NGINX and get the URL
+            String imageUrl = imageAddService.uploadImage(file, productId);
 
-            productUpdateService.addImageUrlToProduct(productId, imageUrl);
-            return ResponseEntity.status(HttpStatus.OK).body("Image uploaded successfully.");
+            // Find the product by ID
+            Product product = productRepository.findById(productId).orElse(null);
+            if (product == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found.");
+            }
+
+            // Add the image URL to the product
+            product.getImageUrls().add(imageUrl);
+            productRepository.save(product);
+
+            return ResponseEntity.ok(product);
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload the file: " + e.getMessage());
         } catch (Exception e) {
+            // Catch any other exceptions that might not have been anticipated
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred: " + e.getMessage());
         }
     }

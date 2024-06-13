@@ -2,15 +2,16 @@ version: '3.8'
 
 services:
   nginx:
-    build: ./nginx
-    container_name: ecommerce_nginx
+    image: nginx:latest
+    container_name: nginx_server
     ports:
       - "80:80"
     volumes:
-      - ./data/images:/usr/share/nginx/html/images
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./data:/usr/share/nginx/html:rw
     networks:
-      - app-network
+      - app_network
 
 networks:
-  app-network:
+  app_network:
     driver: bridge
