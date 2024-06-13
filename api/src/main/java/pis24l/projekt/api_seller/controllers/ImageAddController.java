@@ -10,6 +10,8 @@ import pis24l.projekt.api_seller.repositories.mongo.ProductRepository;
 import pis24l.projekt.api_seller.models.Product;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/images")
@@ -34,14 +36,17 @@ public class ImageAddController {
             String imageUrl = imageAddService.uploadImage(file, productId);
 
             // Find the product by ID
-            Product product = productRepository.findById(productId).orElse(null);
-            if (product == null) {
+            Optional<Product> product = productRepository.findById(productId);
+            if (!product.isPresent()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found.");
             }
 
-            // Add the image URL to the product
-            product.getImageUrls().add(imageUrl);
-            productRepository.save(product);
+            Product newProduct = product.get();
+            List<String> ImageUrls = newProduct.getImageUrls();
+            ImageUrls.addLast(imageUrl);
+            newProduct.setImageUrls(ImageUrls);
+            System.out.println(ImageUrls);
+            productRepository.save(newProduct);
 
             return ResponseEntity.ok(product);
         } catch (IOException e) {
