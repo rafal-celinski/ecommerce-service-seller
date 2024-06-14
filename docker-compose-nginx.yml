@@ -6,6 +6,8 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - ./data:/usr/share/nginx/html:rw
+    ports:
+      - "8000:80"
     networks:
       - seller_net
 
