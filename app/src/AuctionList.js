@@ -59,6 +59,9 @@ function AuctionList({filterData}) {
     if (auctions && auctions.length > 0) {
         return (
             <div className="AuctionList">
+                <div className="AuctionListHeader">
+                    Produkty, które sprzedajesz:
+                </div>
                 <div className="Auctions">
 
                     {auctions.map((auction) => (
