@@ -3,9 +3,9 @@ import React, { useState, useEffect } from 'react';
 import './style.css';
 
 function FilterForm({setFilterData}) {
+    const [categories, setCategories] = useState([]);
     const [formData, setFormData] = useState({
         search: '',
-
         category: '',
         subcategory: '',
         minPrice: '',
@@ -13,7 +13,7 @@ function FilterForm({setFilterData}) {
         location: '',
     });
 
-    useEffect(() => {setFilterData(formData);}, []);
+
 
     function handleChange(e) {
         const { name, value } = e.target;
@@ -22,11 +22,23 @@ function FilterForm({setFilterData}) {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        setFilterData(formData);
+        if (formData.category === '') {
+            setFilterData(formData);
+        }
+        else {
+            let category_name = categories.find(category => category.id === formData.category).name;
+            console.log(category_name);
+            setFilterData({search: '',
+                category: category_name,
+                subcategory: formData.subcategory,
+                minPrice: formData.minPrice,
+                maxPrice: formData.maxPrice,
+                location: formData.location
+            })}
         console.log(formData);
     }
 
-    const [categories, setCategories] = useState([]);
+
     function updateCategories() {
         fetch(process.env.REACT_APP_API_URL + "/categories")
             .then((response) => response.json())
@@ -43,13 +55,28 @@ function FilterForm({setFilterData}) {
 
     }
     useEffect(updateCategories, []);
+    useEffect(() => {
+        if (formData.category === '') {
+            setFilterData(formData);
+        }
+        else {
+        let category_name = categories.find(category => category.id === formData.category).name;
+        console.log(category_name);
+        setFilterData({search: '',
+            category: category_name,
+            subcategory: formData.subcategory,
+            minPrice: formData.minPrice,
+            maxPrice: formData.maxPrice,
+            location: formData.location
+        })}
+    }, []);
 
 
     const [subcategories, setSubcategories] = useState([]);
     function updateSubcategories() {
 
         if (formData.category !== '') {
-            fetch(process.env.REACT_APP_API_URL + "/subcategories/category?categoryId=" + formData.category)
+            fetch(process.env.REACT_APP_API_URL + "/categories/"+ formData.category + "/subcategories")
                 .then((response) => response.json())
                 .then(subcategories => {
                     setSubcategories([{id: '', name: "Wszystkie"}, ...subcategories]);
@@ -71,12 +98,6 @@ function FilterForm({setFilterData}) {
     return (
         <div className='FilterForm'>
             <form onSubmit={handleSubmit}>
-                <input
-                    name='search'
-                    value={formData.search}
-                    onChange={handleChange}
-                    placeholder='Wyszukaj przedmiot'
-                />
                 Kategoria
                 <select
                     name="category"
@@ -97,7 +118,7 @@ function FilterForm({setFilterData}) {
                     onChange={handleChange}
                 >
                     {subcategories.map(subcategory => (
-                            <option key={subcategory.id} value={subcategory.id}>
+                            <option key={subcategory.name} value={subcategory.name}>
                                 {subcategory.name}
                             </option>
                         )

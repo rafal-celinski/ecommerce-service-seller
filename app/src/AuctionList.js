@@ -65,7 +65,7 @@ function AuctionList({filterData}) {
                 <div className="Auctions">
 
                     {auctions.map((auction) => (
-                        <div className="ListElement" key={auction.id}><AuctionListElement auction={auction} key={auction.id} /></div>
+                        auction.status === "UP" && <div className="ListElement" key={auction.id}><AuctionListElement auction={auction} key={auction.id} /></div>
 
                     ))}
 

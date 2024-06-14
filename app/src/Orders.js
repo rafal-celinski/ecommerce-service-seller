@@ -7,9 +7,9 @@ function Orders() {
     const [orders, setOrders] = useState(null);
 
     function fetchOrders() {
-        fetch("http://localhost:8000/history.json")
+        fetch(process.env.REACT_APP_API_URL + "/products/all")
             .then(response => response.json())
-            .then(data => setOrders(data));
+            .then(data => setOrders(data.content));
     }
 
     useEffect(fetchOrders, []);
@@ -21,13 +21,13 @@ function Orders() {
     }
 
     function formatState(state) {
-        if(state === "pending"){
+        if(state === "SOLD"){
             return "Oczekuje na realizację";
         }
         if(state === "delivered"){
             return "Dostarczono";
         }
-        if(state === "sent"){
+        if(state === "SENT"){
             return "Wysłano";
         }
         if(state === "cancelled"){
@@ -36,13 +36,12 @@ function Orders() {
     }
 
     function changeState(auctionId, newState) {
-        fetch("http://localhost:8000/path_state/{auctionID}", {
-            method: 'PATCH',
+        fetch(process.env.REACT_APP_API_URL + "/send/" + auctionId, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({state: newState}),
-        });
+            }
+        })
     }
 
     if (!orders) {
@@ -62,24 +61,20 @@ function Orders() {
                 {orders.map((item) => (
                     <div className="Product" key={item.id}>
                         <div className="ProductImage">
-                            <img src={item.imageUrl[0]} alt="" />
+                            <img src={item.imageUrls[0]} alt="" />
                         </div>
                         <div className="ProductInfo">
                             <Link className="ProductTitle" to={`/auction/${item.id}`}>
                                 {item.title}
                             </Link>
-                            <div className="ProductQuantity">
-                               Ilość: {item.quantity}
-                            </div>
                             <div className="ProductDateAndState">
                                 <span>{formatDate(item.date)}</span>
-                                <span className="ProductState">{formatState(item.state)}</span>
+                                <span className="ProductState">{formatState(item.status)}</span>
                             </div>
                             <div className="ChangeState">
-                                {item.state === "pending" && (
+                                {item.status === "SOLD" && (
                                     <>
                                         <button onClick={() => changeState(item.id, "sent")}>Wysłana</button>
-                                        <button onClick={() => changeState(item.id, "cancelled")}>Anuluj</button>
                                     </>
                                 )}
                             </div>

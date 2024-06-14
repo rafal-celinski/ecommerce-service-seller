@@ -16,7 +16,7 @@ function AuctionListElement({ auction }) {
     }
 
     function deleteAuction() {
-        fetch(process.env.REACT_APP_API_URL + "/products/" + auction.id, {
+        fetch(process.env.REACT_APP_API_URL + "/products/delete/" + auction.id, {
             method: 'DELETE'
         });
     }

@@ -6,6 +6,7 @@ import './AddAuction.css';
 
 function AddAuction() {
     const [images, setImages] = useState([]);
+    const [categories, setCategories] = useState([]);
 
     const [formData, setFormData] = useState({
         title: '',
@@ -17,12 +18,21 @@ function AddAuction() {
     });
 
     async function postAuction() {
+        let category_name = categories.find(category => category.id === formData.category).name;
+
         fetch(process.env.REACT_APP_API_URL + "/products/add", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(formData)
+            body: JSON.stringify({
+                title: formData.title,
+                price: formData.price,
+                location: formData.location,
+                category: category_name,
+                subcategory: formData.subcategory,
+                description: formData.description
+            })
         })
             .then(response => response.json())
             .then(auction => {
@@ -37,6 +47,7 @@ function AddAuction() {
 
             .catch((error) => {
                 console.error('Błąd podczas dodawania produktu: ', error);
+
         });
 
 
@@ -45,7 +56,6 @@ function AddAuction() {
     function postImage(auctionID, name, imageFile) {
         const data = new FormData();
         data.append('productId', auctionID);
-        data.append('name', name);
         data.append('image', imageFile);
 
         fetch(process.env.REACT_APP_API_URL + "/images/add", {
@@ -73,13 +83,9 @@ function AddAuction() {
 
     function handleImageChange(event) {
         setImages([...event.target.files]);
-
-
-
-
     };
 
-    const [categories, setCategories] = useState([]);
+
     function updateCategories() {
         fetch(process.env.REACT_APP_API_URL + '/categories')
             .then((response) => response.json())
@@ -99,7 +105,7 @@ function AddAuction() {
     const [subcategories, setSubcategories] = useState([]);
     function updateSubcategories() {
         if (formData.category !== '') {
-            fetch(process.env.REACT_APP_API_URL + '/subcategories/category?categoryId=' + formData.category)
+            fetch(process.env.REACT_APP_API_URL + "/categories/"+ formData.category + "/subcategories")
                 .then((response) => response.json())
                 .then(subcategories => {
                     setSubcategories([{id: '', name: "Wybierz..."}, ...subcategories]);
@@ -181,7 +187,7 @@ function AddAuction() {
                             name="subcategory"
                             onChange={handleChange} >
                                 {subcategories.map(subcategory => (
-                                    <option key={subcategory.id} value={subcategory.id}>
+                                    <option key={subcategory.name} value={subcategory.name}>
                                         {subcategory.name}
                                     </option>
                                 )
