@@ -9,6 +9,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.Size;
@@ -48,7 +49,11 @@ import javax.validation.constraints.NotNull;
 
         private String description;
 
-        protected Product() { this.status = ProductStatus.UP; this.date = LocalDateTime.now(); }
+        protected Product() {
+            this.status = ProductStatus.UP;
+            this.date = LocalDateTime.now();
+            this.imageUrls = new ArrayList<String>();
+        }
 
         public Product(String title, BigDecimal price, String location, String subcategory, String category, String description, ProductStatus status) {
             this.title = title;
@@ -66,7 +71,7 @@ import javax.validation.constraints.NotNull;
             this.price = price;
         }
 
-        public Product(String title, BigDecimal price, String location, String subcategory, String category, String description, List<String> imageUrls) {
+        public Product(String title, BigDecimal price, String location, String subcategory, String category, String description, ArrayList<String> imageUrls) {
             this.title = title;
             this.price = price;
             this.location = location;
@@ -97,13 +102,13 @@ import javax.validation.constraints.NotNull;
         this.status = status;
     }
 
-    private List<String> imageUrls;
+        private ArrayList<String> imageUrls;
 
-        public List<String> getImageUrls() {
+        public ArrayList<String> getImageUrls() {
             return imageUrls;
         }
 
-        public void setImageUrls(List<String> imageUrls) {
+        public void setImageUrls(ArrayList<String> imageUrls) {
             this.imageUrls = imageUrls;
         }
 
