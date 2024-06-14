@@ -35,7 +35,6 @@ function AuctionListElement({ auction }) {
             </div>
             <div className="EditButtons">
                 <button onClick={deleteAuction}>Usuń</button>
-                <button>Edytuj</button>
             </div>
         </div>
     );
