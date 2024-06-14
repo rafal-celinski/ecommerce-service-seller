@@ -49,3 +49,22 @@
 .Element .LocationDate {
     margin-top: auto;
 }
+
+.Element .EditButtons {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.Element .EditButtons button{
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.Element .EditButtons button:hover{
+    background-color: #0056b3;
+}

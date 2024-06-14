@@ -15,6 +15,12 @@ function AuctionListElement({ auction }) {
         return date.toLocaleDateString('pl-PL', options);
     }
 
+    function deleteAuction() {
+        fetch(process.env.REACT_APP_API_URL + "/products/" + auction.id, {
+            method: 'DELETE'
+        });
+    }
+
     return (
         <div className="Element" key={auction.id}>
             <div className="Image">
@@ -26,6 +32,9 @@ function AuctionListElement({ auction }) {
                 </Link>
                 <div className="Price">{auction.price} zł</div>
                 <div className="LocationDate">{auction.location}, {formatDate(auction.date)}</div>
+            </div>
+            <div className="EditButtons">
+                <button onClick={deleteAuction}>Usuń</button>
             </div>
         </div>
     );
