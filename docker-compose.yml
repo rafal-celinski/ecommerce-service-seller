@@ -1,57 +1,38 @@
 version: '3.8'
 
 services:
-  postgres:
-    extends:
-      file: docker-compose-postgres.yml
-      service: postgres
 
+  mongo:
+    extends:
+      file: docker-compose-mongo.yml
+      service: mongo
+
+  nginx:
+    extends:
+      file: docker-compose-nginx.yml
+      service: nginx
   api:
     extends:
       file: docker-compose-api.yml
       service: api
     depends_on:
-      - postgres
-      - kafka
-      - elasticsearch
+      - mongo
+      - nginx
 
-  app:
-    extends:
-      file: docker-compose-app.yml
-      service: app
-    depends_on:
-      - api
-  
-  zookeeper:
-    extends:
-      file: docker-compose-kafka.yml
-      service: zookeeper
-
-  kafka:
-    extends:
-      file: docker-compose-kafka.yml
-      service: kafka
-    depends_on:
-      - zookeeper
-
-  elasticsearch:
-    extends:
-      file: docker-compose-elasticsearch.yml
-      service: elasticsearch
-
-  elasticsearch:
-    extends:
-      file: docker-compose-elastic.yml
-      service: elasticsearch
-    environment:
-      - ELASTIC_USERNAME=elastic
-      - ELASTIC_PASSWORD=password
+  # app:
+  #   extends:
+  #     file: docker-compose-app.yml
+  #     service: app
+  #   depends_on:
+  #     - api
 
 volumes:
-  postgres_data:
-  elastic_data:
-  esdata:
+  mongo-data:
 
 networks:
-  esnet:
+  seller_net:
     driver: bridge
+    external: true
+
+
+
